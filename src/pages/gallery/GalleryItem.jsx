@@ -32,7 +32,7 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, handleDeta
         >
           Details
         </StyledBlueButton>
-        {galleryType === 'video' && <StyledBlueButton style={{ width: '100%' }} onClick={() => history.push(`/admin/video/${photo.id}/comments`)}
+        {galleryType === 'video' && <StyledBlueButton style={{ width: '100%' }} onClick={() => history.push(`/video/${photo.id}/comments`)}
         >
           Comments {photo.commentCount}
         </StyledBlueButton>}

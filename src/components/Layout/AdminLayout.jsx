@@ -122,7 +122,7 @@ export default function PersistentDrawerLeft({ children }) {
     useEffect(() => {
         const path = history.location.pathname;
         setLocation(path);
-        if (path === '/admin/create-post' || path === '/admin/posts') {
+        if (path === '/create-post' || path === '/posts') {
             setNestedOpen(true)
         }
     }, []);
@@ -180,8 +180,8 @@ export default function PersistentDrawerLeft({ children }) {
                     <Collapse in={nestedOpen} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
                             {[
-                                { text: 'New post', icon: PostAddIcon, url: '/admin/create-post' },
-                                { text: 'View posts', icon: DynamicFeedIcon, url: '/admin/posts' },
+                                { text: 'New post', icon: PostAddIcon, url: '/create-post' },
+                                { text: 'View posts', icon: DynamicFeedIcon, url: '/posts' },
                                 // { text: 'Comments', icon: CommentIcon }
                             ].map((item, index) => (
                                 <ListItem style={item.url === location ? { background: 'rgb(240,240,240)' } : {}} onClick={() => history.push(item.url)} button key={item.text} className={classes.nested}>
@@ -195,10 +195,10 @@ export default function PersistentDrawerLeft({ children }) {
 
 
                     {[
-                        { text: 'Photos', icon: PhotoIcon, url: '/admin/photos' },
-                        { text: 'Videos', icon: VideoIcon, url: '/admin/videos' },
-                        { text: 'Categories', icon: CategoriesIcon, url: '/admin/categories' },
-                        { text: 'Countries', icon: CountriesIcon, url: '/admin/countries' },
+                        { text: 'Photos', icon: PhotoIcon, url: '/photos' },
+                        { text: 'Videos', icon: VideoIcon, url: '/videos' },
+                        { text: 'Categories', icon: CategoriesIcon, url: '/categories' },
+                        { text: 'Countries', icon: CountriesIcon, url: '/countries' },
                     ].map((item, index) => (
                         <ListItem style={item.url === location ? { background: 'rgb(240,240,240)' } : {}} onClick={() => history.push(item.url)} button key={item.text}>
                             <ListItemIcon><item.icon /></ListItemIcon>
@@ -209,9 +209,9 @@ export default function PersistentDrawerLeft({ children }) {
                 <Divider />
                 <List>
                     {[
-                        { text: 'Messages', icon: MailIcon, url: '/admin/messages' },
-                        { text: 'Settings', icon: SettingsIcon, url: '/admin/settings' },
-                        // { text: 'Videos', icon: VideoIcon, url: '/admin/videos' },
+                        { text: 'Messages', icon: MailIcon, url: '/messages' },
+                        { text: 'Settings', icon: SettingsIcon, url: '/settings' },
+                        // { text: 'Videos', icon: VideoIcon, url: '/videos' },
                     ].map((item, index) => (
                         <ListItem
                             style={item.url === location ? { background: 'rgb(240,240,240)' } : {}}

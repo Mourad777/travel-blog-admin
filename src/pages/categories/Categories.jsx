@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { AppUrl } from '../../../utility/utility';
+import { AppUrl } from '../../utility/utility';
 import axios from 'axios'
 import { List, Icon } from "semantic-ui-react";
-import { StyledBlueButton, StyledFormTextInput, StyledRedButton, StyledSubmitButton } from '../../../StyledComponents';
-import Loader from '../../../components/admin/Loader/Loader';
-import { processCategories } from '../../../utility/helper-functions';
-import { deleteCategory, getCategories } from '../../../utility/api';
+import { StyledBlueButton, StyledFormTextInput, StyledRedButton, StyledSubmitButton } from '../../StyledComponents';
+import Loader from '../../components/Loader/Loader';
+import { processCategories } from '../../utility/helper-functions';
+import { deleteCategory, getCategories } from '../../utility/api';
 
 const Categories = ({ winSize }) => {
 

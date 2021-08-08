@@ -299,7 +299,7 @@ export const getVideos = async (setItems, setIsLoading) => {
     const formattedVideos = resFetchVideos.data.map(item => {
         return {
             ...item,
-            src: item.thumbnail || '/assets/video-icon.jpg',
+            src: item.thumbnail || '/assets/icons/video-icon.jpg',
             height: 1,
             width: 1.5,
             commentCount: item.comment_count,

@@ -15,7 +15,7 @@ import ReactPlayer from 'react-player'
 import SortableGallery from '../gallery/Gallery'
 import { deleteVideo, getCategories, getVideos, setNewCategory, updateOrder, presignedUrlFileUpload, updateVideoDetails } from "../../utility/api";
 import { processCategories } from "../../utility/helper-functions";
-import Loader from "../../components/admin/Loader/Loader";
+import Loader from "../../components/Loader/Loader";
 
 function VideoGallery() {
     const [items, setItems] = useState([]);
@@ -70,7 +70,7 @@ function VideoGallery() {
         const newArray = [
             {
                 videoUrl: videoUrl,
-                src: '/assets/video-icon.jpg',
+                src: '/assets/icons/video-icon.jpg',
                 height: 1,
                 width: 1.5,
                 id: videoId,

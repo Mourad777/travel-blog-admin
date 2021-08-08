@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Avatar from 'react-avatar';
 import { useParams } from "react-router-dom";
-import Loader from "../../../components/admin/Loader/Loader";
-import { getMessage } from "../../../utility/api";
+import Loader from "../../components/Loader/Loader";
+import { getMessage } from "../../utility/api";
 
 const Messages = ({ }) => {
     const [message, setMessage] = useState({});

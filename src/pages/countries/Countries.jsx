@@ -1,10 +1,10 @@
 import React, { useState, createRef } from 'react'
 import { Dropdown } from 'semantic-ui-react'
-import { StyledThumbnailPreview, StyledBlueButton, StyledRedButton } from '../../../StyledComponents';
-import { countries } from '../../../utility/countries-iso';
+import { StyledThumbnailPreview, StyledBlueButton, StyledRedButton } from '../../StyledComponents';
+import { countries } from '../../utility/countries-iso';
 import { useEffect } from 'react';
-import { deleteCountryThumbnail, getCountryThumbnails, updateCountryThumbnail, uploadCountryThumbnail } from '../../../utility/api';
-import Loader from '../../../components/admin/Loader/Loader';
+import { deleteCountryThumbnail, getCountryThumbnails, updateCountryThumbnail, uploadCountryThumbnail } from '../../utility/api';
+import Loader from '../../components/Loader/Loader';
 
 const Countries = ({ winSize }) => {
     const [country, setCountry] = useState('');

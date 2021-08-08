@@ -1,9 +1,9 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import { StyledBlueButton, StyledRedButton, StyledThumbnailPreview } from '../../../StyledComponents';
+import { StyledBlueButton, StyledRedButton, StyledThumbnailPreview } from '../../StyledComponents';
 import { useHistory } from 'react-router';
 import { Checkbox, Icon } from 'semantic-ui-react'
-import { deletePost, getPosts } from '../../../utility/api';
-import Loader from '../../../components/admin/Loader/Loader';
+import { deletePost, getPosts } from '../../utility/api';
+import Loader from '../../components/Loader/Loader';
 
 const Posts = ({ winSize }) => {
     const history = useHistory();
@@ -46,8 +46,8 @@ const Posts = ({ winSize }) => {
                                         <td><StyledThumbnailPreview small file={p.image} /></td>
                                         <td>{p.title}</td><td>{p.author}</td>
                                         <td><div style={{ display: 'flex', justifyContent: 'space-around' }}><Checkbox disabled checked={!!p.is_published} onChange={handlePublished} /></div></td>
-                                        <td><StyledBlueButton onClick={() => history.push(`/admin/post/${p.id}/comments`)}>Comments {p.comment_count}</StyledBlueButton> </td>
-                                        <td><StyledBlueButton onClick={() => history.push(`/admin/edit-post/${p.id}`)}>Edit</StyledBlueButton> </td>
+                                        <td><StyledBlueButton onClick={() => history.push(`/post/${p.id}/comments`)}>Comments {p.comment_count}</StyledBlueButton> </td>
+                                        <td><StyledBlueButton onClick={() => history.push(`/edit-post/${p.id}`)}>Edit</StyledBlueButton> </td>
                                         <td><StyledRedButton onClick={() => handleDeletePost(p.id)}> Delete</StyledRedButton> </td>
                                     </Fragment>
                                 )}
@@ -61,8 +61,8 @@ const Posts = ({ winSize }) => {
 
 
                                     <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                        <StyledBlueButton maxWidth onClick={() => history.push(`/admin/post/${p.id}/comments`)}><Icon name='comment outline' size='large' /> {p.comment_count}</StyledBlueButton>
-                                        <StyledBlueButton maxWidth onClick={() => history.push(`/admin/edit-post/${p.id}`)}><Icon name='edit outline' size='large' /></StyledBlueButton>
+                                        <StyledBlueButton maxWidth onClick={() => history.push(`/post/${p.id}/comments`)}><Icon name='comment outline' size='large' /> {p.comment_count}</StyledBlueButton>
+                                        <StyledBlueButton maxWidth onClick={() => history.push(`/edit-post/${p.id}`)}><Icon name='edit outline' size='large' /></StyledBlueButton>
                                         <StyledRedButton maxWidth onClick={() => handleDeletePost(p.id)}> <Icon name='trash alternate outline' size='large' /></StyledRedButton>
                                     </div>
                                 </div>

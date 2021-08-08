@@ -1,9 +1,9 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import { StyledRedButton } from '../../../StyledComponents';
+import { StyledRedButton } from '../../StyledComponents';
 import { useParams } from 'react-router';
 import { Checkbox } from 'semantic-ui-react'
-import { getComments, getDocument, toggleCommentApproval } from '../../../utility/api';
-import Loader from '../../../components/admin/Loader/Loader';
+import { getComments, getDocument, toggleCommentApproval } from '../../utility/api';
+import Loader from '../../components/Loader/Loader';
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);

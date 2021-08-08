@@ -6,19 +6,19 @@ import { BrowserRouter,Switch, Route  } from "react-router-dom";
 // import './style.css'
 import { getWindowSizeInteger } from "./utility/utility";
 import _ from "lodash";
-import Loader from "./components/admin/Loader/Loader";
+import Loader from "./components/Loader/Loader";
 import 'semantic-ui-css/semantic.min.css'
 
-const AdminLayout = React.lazy(() => import("./components/admin/Layout/AdminLayout"));
-const Posts = React.lazy(() => import("./pages/admin/posts/Posts"));
-const Comments = React.lazy(() => import("./pages/admin/comments/Comments"));
-const CreatePost = React.lazy(() => import("./pages/admin/create-post/CreatePost"));
+const AdminLayout = React.lazy(() => import("./components/Layout/AdminLayout"));
+const Posts = React.lazy(() => import("./pages/posts/Posts"));
+const Comments = React.lazy(() => import("./pages/comments/Comments"));
+const CreatePost = React.lazy(() => import("./pages/create-post/CreatePost"));
 const Images = React.lazy(() => import("./pages/images/Images"));
 const Videos = React.lazy(() => import("./pages/videos/Videos"));
-const Messages = React.lazy(() => import("./pages/admin/messages/Messages"));
-const Message = React.lazy(() => import("./pages/admin/messages/Message"));
-const Categories = React.lazy(() => import("./pages/admin/categories/Categories"));
-const Countries = React.lazy(() => import("./pages/admin/countries/Countries"));
+const Messages = React.lazy(() => import("./pages/messages/Messages"));
+const Message = React.lazy(() => import("./pages/messages/Message"));
+const Categories = React.lazy(() => import("./pages/categories/Categories"));
+const Countries = React.lazy(() => import("./pages/countries/Countries"));
 
 const App = () => {
   const [winSize, setWinSize] = useState(getWindowSizeInteger(window.innerWidth));

@@ -11,7 +11,7 @@ import { DateInput, } from 'semantic-ui-calendar-react';
 import { processCategories } from "../../utility/helper-functions";
 import { deletePhoto, getCategories, getPhotos, updateOrder, updatePhotoDetails, uploadPhoto } from "../../utility/api";
 import SortableGallery from '../gallery/Gallery'
-import Loader from "../../components/admin/Loader/Loader";
+import Loader from "../../components/Loader/Loader";
 
 function PhotoGallery() {
     const [items, setItems] = useState([]);

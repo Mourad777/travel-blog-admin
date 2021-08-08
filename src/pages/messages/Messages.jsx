@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { List } from "semantic-ui-react";
 import Avatar from 'react-avatar';
 import { useHistory } from "react-router-dom";
-import { getMessages } from "../../../utility/api";
-import Loader from "../../../components/admin/Loader/Loader";
+import { getMessages } from "../../utility/api";
+import Loader from "../../components/Loader/Loader";
 
 const Messages = ({ }) => {
     const [messages, setMessages] = useState([]);
@@ -19,7 +19,7 @@ const Messages = ({ }) => {
     
 
     const handleMessage = (id) => {
-        history.push(`/admin/message/${id}`)
+        history.push(`/message/${id}`)
     }
 
     return (

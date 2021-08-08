@@ -6,16 +6,16 @@ import {
     StyledRedButton,
     StyledSubmitButton,
     StyledThumbnailPreview,
-} from '../../../StyledComponents';
+} from '../../StyledComponents';
 import { Checkbox, Segment, Dropdown, TextArea, Form } from 'semantic-ui-react'
 import './editor.css'
 import { useParams, useHistory } from 'react-router';
-import { AppUrl } from '../../../utility/utility';
-import { countries } from '../../../utility/countries-iso';
-import TagInput from '../../../components/TagInput/TagInput';
-import { processCategories } from '../../../utility/helper-functions';
-import { editor_photo_upload_handler, getCategories, initializePostForm, submitNewCategory, updatePostForm } from '../../../utility/api';
-import Loader from '../../../components/admin/Loader/Loader';
+import { AppUrl } from '../../utility/utility';
+import { countries } from '../../utility/countries-iso';
+import TagInput from '../../components/TagInput/TagInput';
+import { processCategories } from '../../utility/helper-functions';
+import { editor_photo_upload_handler, getCategories, initializePostForm, submitNewCategory, updatePostForm } from '../../utility/api';
+import Loader from '../../components/Loader/Loader';
 
 const fontStyles =
     "Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago;Merriweather=merriweather; Montserrat=montserrat; Quicksand=quicksand; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats";
@@ -149,7 +149,7 @@ const CreatePost = ({ isEditing }) => {
         let url = `${AppUrl}api/posts/save`;
         if (isEditing) url = `${AppUrl}api/posts/update/${params.id}`;
         await updatePostForm(url, formData, setIsLoading)
-        history.push('/admin/posts');
+        history.push('/posts');
     }
 
 
