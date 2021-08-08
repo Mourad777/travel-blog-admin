@@ -36,7 +36,6 @@ const App = () => {
     <BrowserRouter>
       <React.Suspense fallback={<Loader />}>
         <Switch>
-          <Route path="/">
             <AdminLayout>
               <Route exact path="/posts">
                 <Posts winSize={winSize} />
@@ -72,7 +71,6 @@ const App = () => {
                 <Message />
               </Route>
             </AdminLayout>
-          </Route>
         </Switch>
       </React.Suspense>
     </BrowserRouter>
