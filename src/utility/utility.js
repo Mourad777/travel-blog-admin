@@ -23,8 +23,8 @@ export const getWindowSizeInteger = windowWidth => {
 
 
 
-export let AppUrl = 'http://stormy-forest-71570.herokuapp.com/';
+export let AppUrl = 'https://stormy-forest-71570.herokuapp.com/';
 if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
     // AppUrl = 'http://localhost:8000/';
-    AppUrl = 'http://stormy-forest-71570.herokuapp.com/';
+    AppUrl = 'https://stormy-forest-71570.herokuapp.com/';
 }
