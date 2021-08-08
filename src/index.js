@@ -1,8 +1,83 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter,Switch, Route  } from "react-router-dom";
+// import './style.css'
+import { getWindowSizeInteger } from "./utility/utility";
+import _ from "lodash";
+import Loader from "./components/admin/Loader/Loader";
+import 'semantic-ui-css/semantic.min.css'
+
+const AdminLayout = React.lazy(() => import("./components/admin/Layout/AdminLayout"));
+const Posts = React.lazy(() => import("./pages/admin/posts/Posts"));
+const Comments = React.lazy(() => import("./pages/admin/comments/Comments"));
+const CreatePost = React.lazy(() => import("./pages/admin/create-post/CreatePost"));
+const Images = React.lazy(() => import("./pages/images/Images"));
+const Videos = React.lazy(() => import("./pages/videos/Videos"));
+const Messages = React.lazy(() => import("./pages/admin/messages/Messages"));
+const Message = React.lazy(() => import("./pages/admin/messages/Message"));
+const Categories = React.lazy(() => import("./pages/admin/categories/Categories"));
+const Countries = React.lazy(() => import("./pages/admin/countries/Countries"));
+
+const App = () => {
+  const [winSize, setWinSize] = useState(getWindowSizeInteger(window.innerWidth));
+
+  useEffect(() => {
+    window.addEventListener("resize", _.throttle(getWindowSize, 200), { passive: true });
+  }, []);
+
+  const getWindowSize = () => {
+    const windowSizeWidthInt = getWindowSizeInteger(window.innerWidth);
+    setWinSize(windowSizeWidthInt);
+  };
+
+  return (
+    <BrowserRouter>
+      <React.Suspense fallback={<Loader />}>
+        <Switch>
+          <Route path="/">
+            <AdminLayout>
+              <Route exact path="/posts">
+                <Posts winSize={winSize} />
+              </Route>
+              <Route exact path="/post/:id/comments">
+                <Comments isPost />
+              </Route>
+              <Route exact path="/video/:id/comments">
+                <Comments isVideo />
+              </Route>
+              <Route exact path="/create-post">
+                <CreatePost />
+              </Route>
+              <Route exact path="/edit-post/:id">
+                <CreatePost isEditing />
+              </Route>
+              <Route exact path="/photos">
+                <Images />
+              </Route>
+              <Route exact path="/videos">
+                <Videos />
+              </Route>
+              <Route exact path="/categories">
+                <Categories />
+              </Route>
+              <Route exact path="/countries">
+                <Countries />
+              </Route>
+              <Route exact path="/messages">
+                <Messages />
+              </Route>
+              <Route exact path="/message/:id">
+                <Message />
+              </Route>
+            </AdminLayout>
+          </Route>
+        </Switch>
+      </React.Suspense>
+    </BrowserRouter>
+  );
+}
 
 ReactDOM.render(
   <React.StrictMode>
