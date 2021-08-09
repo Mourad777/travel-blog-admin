@@ -2,7 +2,15 @@ import axios from 'axios'
 import { AppUrl } from './utility'
 import { processComments } from './helper-functions'
 
-
+// const token = document.head.querySelector('meta[name="csrf-token"]');
+const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+console.log('token',token.content)
+const defaultPostHeader = {
+    headers: {
+        'Content-Type': 'multipart/form-data',
+        "X-CSRF-TOKEN'": token
+    }
+}
 //comments api
 export const getComments = async (docId, docType, setComments, setIsLoading) => {
     setIsLoading(true)
@@ -41,9 +49,7 @@ export const toggleCommentApproval = async (id, setIsLoading) => {
     formData.append('comment_id', id)
     let toggleCommentAprrovalResponse;
     try {
-        toggleCommentAprrovalResponse = await axios.post(`${AppUrl}api/comments/approve-comment`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        })
+        toggleCommentAprrovalResponse = await axios.post(`${AppUrl}api/comments/approve-comment`, formData, defaultPostHeader)
 
     } catch (e) {
         console.log('Toggle Comment Aprroval Response Error', e)
@@ -73,10 +79,11 @@ export const uploadCountryThumbnail = async (formData, setIsLoading) => {
     setIsLoading(true);
     let uploadThumbnailResponse;
     try {
-        uploadThumbnailResponse = await axios.post(`${AppUrl}api/countries/save`, formData,
-            {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+        uploadThumbnailResponse = await axios.post(
+            `${AppUrl}api/countries/save`,
+            formData,
+            defaultPostHeader
+        );
     } catch (e) {
         console.log('Upload Country Thumbnail Error', e);
         setIsLoading(false);
@@ -89,10 +96,11 @@ export const updateCountryThumbnail = async (id, formData, setIsLoading) => {
     setIsLoading(true);
     let updateThumbnailResponse;
     try {
-        updateThumbnailResponse = await axios.post(`${AppUrl}api/countries/update/${id}`, formData,
-            {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+        updateThumbnailResponse = await axios.post(
+            `${AppUrl}api/countries/update/${id}`,
+            formData,
+            defaultPostHeader
+        );
     } catch (e) {
         console.log('Update Country Thumbnail Error', e);
         setIsLoading(false);
@@ -133,10 +141,11 @@ export const submitNewCategory = async (newCategory, setIsLoading) => {
     let newCategoryResponse;
     setIsLoading(true)
     try {
-        newCategoryResponse = await axios.post(`${AppUrl}api/categories/save`, formData,
-            {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            })
+        newCategoryResponse = await axios.post(
+            `${AppUrl}api/categories/save`,
+            formData,
+            defaultPostHeader
+        )
     } catch (e) {
         setIsLoading(false)
         console.log('New category response error: ', e)
@@ -173,10 +182,11 @@ export const updateOrder = async (items, galleryType) => {
     configFormData.append(galleryType, JSON.stringify(order));
     let resUpdateOrder;
     try {
-        resUpdateOrder = await axios.post(updateOrderUrl, configFormData,
-            {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+        resUpdateOrder = await axios.post(
+            updateOrderUrl,
+            configFormData,
+            defaultPostHeader
+        );
     } catch (e) {
         console.log('Update photo order response error: ', e)
 
@@ -243,10 +253,10 @@ export const updatePhotoDetails = async (id, formData, setIsLoading) => {
     setIsLoading(true);
     let updatePhotoDetailsResponse;
     try {
-        updatePhotoDetailsResponse = await axios.post(`${AppUrl}api/photos/update/${id}`, formData,
-            {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+        updatePhotoDetailsResponse = await axios.post(
+            `${AppUrl}api/photos/update/${id}`,
+            formData,
+            defaultPostHeader);
     } catch (e) {
         setIsLoading(false);
         console.log('Update photo details response error', e)
@@ -260,10 +270,11 @@ export const updateVideoDetails = async (id, formData, setIsLoading) => {
     setIsLoading(true);
     let updateVideoDetailsResponse;
     try {
-        updateVideoDetailsResponse = await axios.post(`${AppUrl}api/videos/update/${id}`, formData,
-            {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+        updateVideoDetailsResponse = await axios.post(
+            `${AppUrl}api/videos/update/${id}`,
+            formData,
+            defaultPostHeader
+        );
     } catch (e) {
         setIsLoading(false);
         console.log('Update Video Details Error', e)
@@ -374,10 +385,11 @@ export const uploadPhoto = async (formData, items, setIsLoading) => {
     setIsLoading(true)
     let resUploadPhoto;
     try {
-        resUploadPhoto = await axios.post(savePhotoUrl, formData,
-            {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+        resUploadPhoto = await axios.post(
+            savePhotoUrl,
+            formData,
+            defaultPostHeader
+        );
     } catch (e) {
         setIsLoading(false)
         console.log('Upload photo response error', e)
@@ -395,10 +407,11 @@ export const presignedUrlFileUpload = async (filename, directory, file, saveMode
     fileInfo.append('filename', filename);
     fileInfo.append('directory', directory);
 
-    const resPresignedUrl = await axios.post(presignedUrlEndpoint, fileInfo,
-        {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+    const resPresignedUrl = await axios.post(
+        presignedUrlEndpoint,
+        fileInfo,
+        defaultPostHeader
+    );
     console.log('Presigned url response', resPresignedUrl);
 
     //step 2 send file to presigned url
@@ -412,7 +425,7 @@ export const presignedUrlFileUpload = async (filename, directory, file, saveMode
 
     const fileUploadUrl =
         resPresignedUrl.data.attributes.action;
-
+    //this request goes to aws directly from front-end
     const response = await axios.post(
         fileUploadUrl,
         fileData,
@@ -425,10 +438,10 @@ export const presignedUrlFileUpload = async (filename, directory, file, saveMode
         newModelFormData.append(item.key, item.value)
     });
 
-    const saveModelResponse = await axios.post(saveModelUrl, newModelFormData,
-        {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+    const saveModelResponse = await axios.post(
+        saveModelUrl, newModelFormData,
+        defaultPostHeader
+    );
     console.log('Save model response', saveModelResponse)
     return { videoUrl: resPresignedUrl.data.url, videoId: saveModelResponse.data.id }
 }
@@ -483,9 +496,11 @@ export const updatePostForm = async (url, formData, setIsLoading) => {
     let res;
     setIsLoading(true)
     try {
-        res = await axios.post(url, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        res = await axios.post(
+            url,
+            formData,
+            defaultPostHeader
+        );
 
     } catch (e) {
         console.log('Update post error', e)
@@ -549,9 +564,10 @@ export const getMessage = async (messageId, setMessage, setIsLoading) => {
 export const editor_photo_upload_handler = async (blobInfo, success, failure, progress) => {
     const formData = new FormData();
     formData.append('image', blobInfo.blob());
-    const res = await axios.post(`${AppUrl}api/tinymce/upload`,
+    const res = await axios.post(
+        `${AppUrl}api/tinymce/upload`,
         formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
+        defaultPostHeader
     );
 
     console.log('res.data', res.data)

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter,Switch, Route  } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 // import './style.css'
 import { getWindowSizeInteger } from "./utility/utility";
 import _ from "lodash";
@@ -21,6 +21,7 @@ const Categories = React.lazy(() => import("./pages/categories/Categories"));
 const Countries = React.lazy(() => import("./pages/countries/Countries"));
 
 const App = () => {
+
   const [winSize, setWinSize] = useState(getWindowSizeInteger(window.innerWidth));
 
   useEffect(() => {
@@ -34,43 +35,43 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <React.Suspense fallback={<Loader />}>
+      <React.Suspense fallback={<div style={{ position: 'fixed', zIndex: 5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}>
         <Switch>
-            <AdminLayout>
-              <Route exact path="/posts">
-                <Posts winSize={winSize} />
-              </Route>
-              <Route exact path="/post/:id/comments">
-                <Comments isPost />
-              </Route>
-              <Route exact path="/video/:id/comments">
-                <Comments isVideo />
-              </Route>
-              <Route exact path="/create-post">
-                <CreatePost />
-              </Route>
-              <Route exact path="/edit-post/:id">
-                <CreatePost isEditing />
-              </Route>
-              <Route exact path="/photos">
-                <Images />
-              </Route>
-              <Route exact path="/videos">
-                <Videos />
-              </Route>
-              <Route exact path="/categories">
-                <Categories />
-              </Route>
-              <Route exact path="/countries">
-                <Countries />
-              </Route>
-              <Route exact path="/messages">
-                <Messages />
-              </Route>
-              <Route exact path="/message/:id">
-                <Message />
-              </Route>
-            </AdminLayout>
+          <AdminLayout>
+            <Route exact path="/posts">
+              <Posts winSize={winSize} />
+            </Route>
+            <Route exact path="/post/:id/comments">
+              <Comments isPost />
+            </Route>
+            <Route exact path="/video/:id/comments">
+              <Comments isVideo />
+            </Route>
+            <Route exact path="/create-post">
+              <CreatePost />
+            </Route>
+            <Route exact path="/edit-post/:id">
+              <CreatePost isEditing />
+            </Route>
+            <Route exact path="/photos">
+              <Images />
+            </Route>
+            <Route exact path="/videos">
+              <Videos />
+            </Route>
+            <Route exact path="/categories">
+              <Categories />
+            </Route>
+            <Route exact path="/countries">
+              <Countries />
+            </Route>
+            <Route exact path="/messages">
+              <Messages />
+            </Route>
+            <Route exact path="/message/:id">
+              <Message />
+            </Route>
+          </AdminLayout>
         </Switch>
       </React.Suspense>
     </BrowserRouter>
