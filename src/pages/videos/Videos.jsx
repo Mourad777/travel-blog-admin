@@ -39,6 +39,7 @@ function VideoGallery() {
 
     const onSortEnd = async ({ oldIndex, newIndex }) => {
         const reArrangeVideos = arrayMove(items, oldIndex, newIndex);
+        console.log('reArrangeVideos',reArrangeVideos)
         setItems(reArrangeVideos);
         updateOrder(reArrangeVideos, 'video_gallery_order')
     };

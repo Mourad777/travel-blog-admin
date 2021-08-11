@@ -41,6 +41,7 @@ function PhotoGallery() {
 
     const onSortEnd = async ({ oldIndex, newIndex }) => {
         const reArrangedPhotos = arrayMove(items, oldIndex, newIndex);
+        console.log('reArrangedPhotos',reArrangedPhotos)
         setItems(reArrangedPhotos);
         //update order
         updateOrder(reArrangedPhotos, 'photo_gallery_order')
