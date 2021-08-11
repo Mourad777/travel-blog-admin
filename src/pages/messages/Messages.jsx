@@ -4,6 +4,7 @@ import Avatar from 'react-avatar';
 import { useHistory } from "react-router-dom";
 import { getMessages } from "../../utility/api";
 import Loader from "../../components/Loader/Loader";
+import { getPusher } from "../../utility/utility";
 
 const Messages = ({ }) => {
     const [messages, setMessages] = useState([]);
@@ -15,6 +16,12 @@ const Messages = ({ }) => {
     }
     useEffect(() => {
         getInitialData();
+
+        const channel = getPusher().subscribe("my-channel");
+        channel.bind("MessagesUpdated", async (data) => {
+            console.log('data', data)
+            getInitialData();
+        });
     }, []);
     
 

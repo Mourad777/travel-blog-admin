@@ -7,7 +7,7 @@ import {
     StyledSubmitButton,
     StyledThumbnailPreview,
 } from '../../StyledComponents';
-import { AppUrl, getFileName } from '../../utility/utility';
+import { AppUrl, getFileName, getPusher } from '../../utility/utility';
 import { Checkbox, Segment, Dropdown } from 'semantic-ui-react'
 import { countries } from "../../utility/countries-iso";
 import TagInput from "../../components/TagInput/TagInput";
@@ -54,6 +54,12 @@ function VideoGallery() {
 
     useEffect(() => {
         getInitialData()
+
+        const channel = getPusher().subscribe("my-channel");
+        channel.bind("CommentsUpdated", async (data) => {
+            console.log('data', data)
+            getInitialData()
+        });
     }, []);
 
     const handleVideoUpload = async e => {

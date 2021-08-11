@@ -1,3 +1,4 @@
+import Pusher from "pusher-js";
 import { v1 } from "uuid";
 
 export const getFileName = (filename) => {
@@ -23,9 +24,19 @@ export const getWindowSizeInteger = windowWidth => {
 
 
 
-// export let AppUrl = 'http://localhost:8000/';
-export let AppUrl = 'https://stormy-forest-71570.herokuapp.com/';
+export let AppUrl = 'http://localhost:8000/';
+// export let AppUrl = 'https://stormy-forest-71570.herokuapp.com/';
 // if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
 //     // AppUrl = 'http://localhost:8000/';
 //     AppUrl = 'https://stormy-forest-71570.herokuapp.com/';
 // }
+
+export const getPusher = () => {
+    const pusherKey = '540ea742ac9e8d6d5157';
+    const pusherCluster = 'us2'
+
+    const pusher = new Pusher(pusherKey, {
+        cluster: pusherCluster,
+    });
+    return pusher;
+}

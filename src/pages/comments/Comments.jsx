@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 import { Checkbox } from 'semantic-ui-react'
 import { getComments, getDocument, toggleCommentApproval } from '../../utility/api';
 import Loader from '../../components/Loader/Loader';
+import { getPusher } from '../../utility/utility';
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -31,6 +32,12 @@ const Comments = ({ isPost, isVideo }) => {
 
     useEffect(() => {
         getInitialData()
+
+        const channel = getPusher().subscribe("my-channel");
+        channel.bind("CommentsUpdated", async (data) => {
+            console.log('data', data)
+            getInitialData()
+        });
     }, [])
 
     // export const deleteComment = async (id, setIsLoading) => {
