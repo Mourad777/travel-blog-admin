@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import LockIcon from '@material-ui/icons/Lock';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ListItem from '@material-ui/core/ListItem';
@@ -31,6 +32,7 @@ import VideoIcon from '@material-ui/icons/MovieCreation';
 import { useHistory } from 'react-router';
 import CategoriesIcon from '@material-ui/icons/AccountTree';
 import CountriesIcon from '@material-ui/icons/Public';
+import { logout } from '../../utility/api';
 
 const drawerWidth = 240;
 
@@ -93,6 +95,11 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: theme.spacing(4),
     },
 }));
+
+const endSession = async () => {
+    await logout(() => console.log('logged out'));
+    localStorage.removeItem('token')
+}
 
 export default function PersistentDrawerLeft({ children }) {
     const classes = useStyles();
@@ -210,12 +217,23 @@ export default function PersistentDrawerLeft({ children }) {
                 <List>
                     {[
                         { text: 'Messages', icon: MailIcon, url: '/messages' },
-                        { text: 'Settings', icon: SettingsIcon, url: '/settings' },
+                        // { text: 'Settings', icon: SettingsIcon, url: '/settings' },
+                        { text: 'Logout', icon: LockIcon, url: '/login' },
                         // { text: 'Videos', icon: VideoIcon, url: '/videos' },
                     ].map((item, index) => (
                         <ListItem
                             style={item.url === location ? { background: 'rgb(240,240,240)' } : {}}
-                            onClick={() => history.push(item.url)} button key={item.text}>
+                            onClick={async () => {
+                                if (item.text === 'Logout') {
+                                    await endSession()
+                                    history.push(item.url);
+                                } else {
+                                    history.push(item.url)
+                                }
+                            }
+
+                            } button key={item.text}
+                        >
                             <ListItemIcon><item.icon /></ListItemIcon>
                             <ListItemText primary={item.text} />
                         </ListItem>
@@ -232,6 +250,6 @@ export default function PersistentDrawerLeft({ children }) {
                 <div className={classes.drawerHeader} />
                 {children}
             </main>
-        </div>
+        </div >
     );
 }

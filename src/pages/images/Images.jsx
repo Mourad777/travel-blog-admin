@@ -9,7 +9,7 @@ import TagInput from "../../components/TagInput/TagInput";
 import EXIF from "exif-js";
 import { DateInput, } from 'semantic-ui-calendar-react';
 import { processCategories } from "../../utility/helper-functions";
-import { deletePhoto, getCategories, getPhotos, updateOrder, updatePhotoDetails, uploadPhoto } from "../../utility/api";
+import { deletePhoto, getCategories, getPhotos, submitNewCategory, updateOrder, updatePhotoDetails, uploadPhoto } from "../../utility/api";
 import SortableGallery from '../gallery/Gallery'
 import Loader from "../../components/Loader/Loader";
 
@@ -157,7 +157,7 @@ function PhotoGallery() {
     };
 
     const submitCategory = async () => {
-        setNewCategory(newCategory, setIsLoading)
+        submitNewCategory(newCategory, setIsLoading)
         const categoriesResponse = await getCategories();
         const processedCategories = processCategories(categoriesResponse.data);
         setCategories(processedCategories);

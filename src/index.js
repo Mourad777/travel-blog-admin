@@ -3,13 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-// import './style.css'
 import { getWindowSizeInteger } from "./utility/utility";
 import _ from "lodash";
 import Loader from "./components/Loader/Loader";
-import 'semantic-ui-css/semantic.min.css'
+import 'semantic-ui-css/semantic.min.css';
 
 const AdminLayout = React.lazy(() => import("./components/Layout/AdminLayout"));
+const RegisterUser = React.lazy(() => import("./pages/register/Register"));
+const Login = React.lazy(() => import("./pages/login/Login"));
 const Posts = React.lazy(() => import("./pages/posts/Posts"));
 const Comments = React.lazy(() => import("./pages/comments/Comments"));
 const CreatePost = React.lazy(() => import("./pages/create-post/CreatePost"));
@@ -38,6 +39,12 @@ const App = () => {
       <React.Suspense fallback={<div style={{ position: 'fixed', zIndex: 5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}>
         <Switch>
           <AdminLayout>
+            <Route exact path="/register">
+              <RegisterUser winSize={winSize} />
+            </Route>
+            <Route exact path="/login">
+              <Login winSize={winSize} />
+            </Route>
             <Route exact path="/posts">
               <Posts winSize={winSize} />
             </Route>

@@ -13,7 +13,7 @@ import { countries } from "../../utility/countries-iso";
 import TagInput from "../../components/TagInput/TagInput";
 import ReactPlayer from 'react-player'
 import SortableGallery from '../gallery/Gallery'
-import { deleteVideo, getCategories, getVideos, setNewCategory, updateOrder, presignedUrlFileUpload, updateVideoDetails } from "../../utility/api";
+import { deleteVideo, getCategories, getVideos, submitNewCategory, updateOrder, presignedUrlFileUpload, updateVideoDetails } from "../../utility/api";
 import { processCategories } from "../../utility/helper-functions";
 import Loader from "../../components/Loader/Loader";
 
@@ -128,7 +128,7 @@ function VideoGallery() {
     };
 
     const submitCategory = async () => {
-        setNewCategory(newCategory, setIsLoading)
+        submitNewCategory(newCategory, setIsLoading)
         const categoriesResponse = await getCategories();
         const processedCategories = processCategories(categoriesResponse.data);
         setCategories(processedCategories);

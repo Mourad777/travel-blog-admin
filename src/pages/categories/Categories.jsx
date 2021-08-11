@@ -5,7 +5,7 @@ import { List, Icon } from "semantic-ui-react";
 import { StyledBlueButton, StyledFormTextInput, StyledRedButton, StyledSubmitButton } from '../../StyledComponents';
 import Loader from '../../components/Loader/Loader';
 import { processCategories } from '../../utility/helper-functions';
-import { deleteCategory, getCategories } from '../../utility/api';
+import { deleteCategory, getCategories, submitNewCategory } from '../../utility/api';
 
 const Categories = ({ winSize }) => {
 
@@ -49,24 +49,14 @@ const Categories = ({ winSize }) => {
 
     }
 
-    const submitNewCategory = async () => {
-        const formData = new FormData();
-        formData.append('name', newCategory);
-        let newCategoryResponse;
-        setIsLoading(true);
-        try {
-            newCategoryResponse = await axios.post(`${AppUrl}api/categories/save`, formData,
-                {
-                    headers: { 'Content-Type': 'multipart/form-data' }
-                });
-        } catch (e) {
-            console.log('New category response error', e);
-            setIsLoading(false);
-        }
-        console.log('New category response', newCategoryResponse)
-        setIsLoading(false);
+    const submit = async () => {
+        await submitNewCategory(newCategory, setIsLoading)
+
+        const categoriesResponse = await getCategories();
+        const processedCategories = processCategories(categoriesResponse.data);
+        setCategories(processedCategories);
         setNewCategory('')
-        fetchCategories()
+
     }
 
     const updateExistingCategory = async (id) => {
@@ -96,14 +86,14 @@ const Categories = ({ winSize }) => {
 
     return (
         <div style={{ maxWidth: 800, position: 'relative' }}>
-            {isLoading && <div style={{ position: 'fixed',zIndex:5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}
+            {isLoading && <div style={{ position: 'fixed', zIndex: 5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}
             <h1>Categories</h1>
             <span style={{ fontSize: '1.2em' }}>New Category</span>
             <StyledFormTextInput disabled={isLoading} style={{ marginTop: 10 }} value={newCategory}
                 onChange={handleNewCategory}
                 placeholder='New Category'
             />
-            <StyledSubmitButton disabled={isLoading} onClick={submitNewCategory} style={{ width: 100, margin: '20px 0' }}>Submit</StyledSubmitButton>
+            <StyledSubmitButton disabled={isLoading} onClick={submit} style={{ width: 100, margin: '20px 0' }}>Submit</StyledSubmitButton>
             <List>
                 {categories.map((c, i) => (
                     <List.Item style={{ padding: 0 }} key={`category[${c._id}]`}>

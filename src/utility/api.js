@@ -3,12 +3,17 @@ import { AppUrl } from './utility'
 import { processComments } from './helper-functions'
 
 // const token = document.head.querySelector('meta[name="csrf-token"]');
-const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-console.log('token',token.content)
-const defaultPostHeader = {
-    headers: {
-        'Content-Type': 'multipart/form-data',
-        "X-CSRF-TOKEN'": token
+// const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+// console.log('token',token.content)
+//newcat newpost
+
+const getDefaultHeader = (token) => {
+    console.log('token..', token)
+    return {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: "Bearer " + token,
+        }
     }
 }
 //comments api
@@ -44,12 +49,13 @@ export const getDocument = async (docId, docType, setDocument, setIsLoading) => 
 }
 
 export const toggleCommentApproval = async (id, setIsLoading) => {
+    const token = localStorage.getItem('token');
     setIsLoading(true);
     const formData = new FormData();
     formData.append('comment_id', id)
     let toggleCommentAprrovalResponse;
     try {
-        toggleCommentAprrovalResponse = await axios.post(`${AppUrl}api/comments/approve-comment`, formData, defaultPostHeader)
+        toggleCommentAprrovalResponse = await axios.post(`${AppUrl}api/comments/approve-comment`, formData, getDefaultHeader(token))
 
     } catch (e) {
         console.log('Toggle Comment Aprroval Response Error', e)
@@ -76,13 +82,14 @@ export const getCountryThumbnails = async (setCountryThumbnails, setIsLoading) =
 }
 
 export const uploadCountryThumbnail = async (formData, setIsLoading) => {
+    const token = localStorage.getItem('token');
     setIsLoading(true);
     let uploadThumbnailResponse;
     try {
         uploadThumbnailResponse = await axios.post(
             `${AppUrl}api/countries/save`,
             formData,
-            defaultPostHeader
+            getDefaultHeader(token)
         );
     } catch (e) {
         console.log('Upload Country Thumbnail Error', e);
@@ -93,13 +100,14 @@ export const uploadCountryThumbnail = async (formData, setIsLoading) => {
 }
 
 export const updateCountryThumbnail = async (id, formData, setIsLoading) => {
+    const token = localStorage.getItem('token');
     setIsLoading(true);
     let updateThumbnailResponse;
     try {
         updateThumbnailResponse = await axios.post(
             `${AppUrl}api/countries/update/${id}`,
             formData,
-            defaultPostHeader
+            getDefaultHeader(token)
         );
     } catch (e) {
         console.log('Update Country Thumbnail Error', e);
@@ -110,10 +118,11 @@ export const updateCountryThumbnail = async (id, formData, setIsLoading) => {
 }
 
 export const deleteCountryThumbnail = async (id, setIsLoading) => {
+    const token = localStorage.getItem('token');
     setIsLoading(true);
     let deleteCountryThumbnailsResponse;
     try {
-        deleteCountryThumbnailsResponse = await axios.delete(`${AppUrl}api/countries/delete/${id}`);
+        deleteCountryThumbnailsResponse = await axios.delete(`${AppUrl}api/countries/delete/${id}`, getDefaultHeader(token));
         console.log('Delete Country Thumbnails Response', deleteCountryThumbnailsResponse)
     } catch (e) {
         console.log('Delete Country Thumbnail Error', e);
@@ -136,20 +145,23 @@ export const getCategories = async () => {
 }
 
 export const submitNewCategory = async (newCategory, setIsLoading) => {
+    const token = localStorage.getItem('token');
     const formData = new FormData();
     formData.append('name', newCategory);
     let newCategoryResponse;
     setIsLoading(true)
+    console.log('new category token', token)
     try {
         newCategoryResponse = await axios.post(
             `${AppUrl}api/categories/save`,
             formData,
-            defaultPostHeader
+            getDefaultHeader(token)
         )
     } catch (e) {
         setIsLoading(false)
         console.log('New category response error: ', e)
     }
+    setIsLoading(false)
     console.log('New category response: ', newCategoryResponse)
 }
 
@@ -176,6 +188,7 @@ export const getCategoryContent = async (countryIso, selectedCategory, setPosts,
 //updates the order of photos or videos in a gallery after
 //dragging and dropping
 export const updateOrder = async (items, galleryType) => {
+    const token = localStorage.getItem('token');
     const updateOrderUrl = `${AppUrl}api/configurations/update`;
     const order = items.map(item => item.id);
     const configFormData = new FormData();
@@ -185,7 +198,7 @@ export const updateOrder = async (items, galleryType) => {
         resUpdateOrder = await axios.post(
             updateOrderUrl,
             configFormData,
-            defaultPostHeader
+            getDefaultHeader(token)
         );
     } catch (e) {
         console.log('Update photo order response error: ', e)
@@ -250,13 +263,14 @@ export const getPhotos = async (setItems, setIsLoading) => {
 }
 
 export const updatePhotoDetails = async (id, formData, setIsLoading) => {
+    const token = localStorage.getItem('token');
     setIsLoading(true);
     let updatePhotoDetailsResponse;
     try {
         updatePhotoDetailsResponse = await axios.post(
             `${AppUrl}api/photos/update/${id}`,
             formData,
-            defaultPostHeader);
+            getDefaultHeader(token));
     } catch (e) {
         setIsLoading(false);
         console.log('Update photo details response error', e)
@@ -267,13 +281,14 @@ export const updatePhotoDetails = async (id, formData, setIsLoading) => {
 }
 
 export const updateVideoDetails = async (id, formData, setIsLoading) => {
+    const token = localStorage.getItem('token');
     setIsLoading(true);
     let updateVideoDetailsResponse;
     try {
         updateVideoDetailsResponse = await axios.post(
             `${AppUrl}api/videos/update/${id}`,
             formData,
-            defaultPostHeader
+            getDefaultHeader(token)
         );
     } catch (e) {
         setIsLoading(false);
@@ -350,12 +365,11 @@ export const getVideo = async (id, setVideo, setIsLoading) => {
 }
 
 export const deleteVideo = async (id, setIsLoading) => {
+    const token = localStorage.getItem('token');
     let deleteVideoResponse;
     setIsLoading(true);
     try {
-        deleteVideoResponse = await axios.delete(`${AppUrl}api/videos/delete/${id}`, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        })
+        deleteVideoResponse = await axios.delete(`${AppUrl}api/videos/delete/${id}`, getDefaultHeader(token))
     } catch (e) {
         setIsLoading(false);
         console.log('Delete video response error', e)
@@ -365,12 +379,11 @@ export const deleteVideo = async (id, setIsLoading) => {
 }
 
 export const deletePhoto = async (id, setIsLoading) => {
+    const token = localStorage.getItem('token');
     let deletePhotoResponse;
     setIsLoading(true);
     try {
-        deletePhotoResponse = await axios.delete(`${AppUrl}api/photos/delete/${id}`, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        })
+        deletePhotoResponse = await axios.delete(`${AppUrl}api/photos/delete/${id}`, getDefaultHeader(token))
     } catch (e) {
         setIsLoading(false);
         console.log('Delete photo response error', e)
@@ -380,6 +393,7 @@ export const deletePhoto = async (id, setIsLoading) => {
 }
 
 export const uploadPhoto = async (formData, items, setIsLoading) => {
+    const token = localStorage.getItem('token');
 
     const savePhotoUrl = `${AppUrl}api/photos/save`;
     setIsLoading(true)
@@ -388,7 +402,7 @@ export const uploadPhoto = async (formData, items, setIsLoading) => {
         resUploadPhoto = await axios.post(
             savePhotoUrl,
             formData,
-            defaultPostHeader
+            getDefaultHeader(token)
         );
     } catch (e) {
         setIsLoading(false)
@@ -401,6 +415,7 @@ export const uploadPhoto = async (formData, items, setIsLoading) => {
 }
 
 export const presignedUrlFileUpload = async (filename, directory, file, saveModelUrl, modelData) => {
+    const token = localStorage.getItem('token');
     //step 1 get presigned url
     const presignedUrlEndpoint = `${AppUrl}api/upload/store`;
     const fileInfo = new FormData();
@@ -410,7 +425,7 @@ export const presignedUrlFileUpload = async (filename, directory, file, saveMode
     const resPresignedUrl = await axios.post(
         presignedUrlEndpoint,
         fileInfo,
-        defaultPostHeader
+        getDefaultHeader(token)
     );
     console.log('Presigned url response', resPresignedUrl);
 
@@ -440,19 +455,18 @@ export const presignedUrlFileUpload = async (filename, directory, file, saveMode
 
     const saveModelResponse = await axios.post(
         saveModelUrl, newModelFormData,
-        defaultPostHeader
+        getDefaultHeader(token)
     );
     console.log('Save model response', saveModelResponse)
     return { videoUrl: resPresignedUrl.data.url, videoId: saveModelResponse.data.id }
 }
 
 export const deleteCategory = async (id, setIsLoading) => {
+    const token = localStorage.getItem('token');
     let deleteResponse;
     setIsLoading(true);
     try {
-        deleteResponse = await axios.delete(`${AppUrl}api/categories/delete/${id}`, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        deleteResponse = await axios.delete(`${AppUrl}api/categories/delete/${id}`, getDefaultHeader(token));
     } catch (e) {
         console.log('Delete Error Response', e)
         setIsLoading(false);
@@ -493,13 +507,14 @@ export const initializePostForm = async (id, setIsLoading) => {
 }
 
 export const updatePostForm = async (url, formData, setIsLoading) => {
+    const token = localStorage.getItem('token');
     let res;
     setIsLoading(true)
     try {
         res = await axios.post(
             url,
             formData,
-            defaultPostHeader
+            getDefaultHeader(token)
         );
 
     } catch (e) {
@@ -511,12 +526,11 @@ export const updatePostForm = async (url, formData, setIsLoading) => {
 }
 
 export const deletePost = async (id, setIsLoading) => {
+    const token = localStorage.getItem('token');
     let res;
     setIsLoading(true)
     try {
-        res = await axios.delete(`${AppUrl}api/posts/delete/${id}`, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        res = await axios.delete(`${AppUrl}api/posts/delete/${id}`, getDefaultHeader(token));
 
     } catch (e) {
         console.log('Fetch posts error', e)
@@ -562,15 +576,83 @@ export const getMessage = async (messageId, setMessage, setIsLoading) => {
 
 //tinymce editor
 export const editor_photo_upload_handler = async (blobInfo, success, failure, progress) => {
+    const token = localStorage.getItem('token');
     const formData = new FormData();
     formData.append('image', blobInfo.blob());
     const res = await axios.post(
         `${AppUrl}api/tinymce/upload`,
         formData,
-        defaultPostHeader
+        getDefaultHeader(token)
     );
 
     console.log('res.data', res.data)
     success(res.data.location)
     return res.data.location;
 };
+
+export const registerUser = async (url, formData, setIsLoading) => {
+    let registrationResponse;
+    setIsLoading(true)
+    try {
+        registrationResponse = await axios.post(
+            url,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            }
+        )
+    } catch (e) {
+        setIsLoading(false)
+        console.log('User registration response error: ', e)
+    }
+    setIsLoading(false)
+    console.log('User registration response: ', registrationResponse)
+
+    const token = registrationResponse.data.token;
+    localStorage.setItem('token', token)
+}
+
+export const login = async (url, formData, setIsLoading) => {
+    let loginResponse;
+    setIsLoading(true);
+    try {
+        loginResponse = await axios.post(
+            url,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            }
+        )
+    } catch (e) {
+        setIsLoading(false)
+        console.log('User login response error: ', e)
+    }
+    setIsLoading(false)
+    console.log('User login response: ', loginResponse)
+
+    const token = loginResponse.data.token;
+    localStorage.setItem('token', token)
+}
+
+export const logout = async (setIsLoading) => {
+    const url = `${AppUrl}api/logout`;
+    const token = localStorage.getItem('token');
+    let logoutResponse;
+    setIsLoading(true);
+    try {
+        logoutResponse = await axios.post(
+            url,
+            {},
+            getDefaultHeader(token),
+        )
+    } catch (e) {
+        setIsLoading(false)
+        console.log('User logout response error: ', e)
+    }
+    setIsLoading(false)
+    console.log('User logout response: ', logoutResponse)
+}

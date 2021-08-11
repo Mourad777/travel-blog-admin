@@ -104,9 +104,7 @@ const CreatePost = ({ isEditing }) => {
     }
 
     const handleNewCategorySubmit = async () => {
-        const formData = new FormData();
-        formData.append('name', newCategory);
-        await submitNewCategory(formData, setIsLoading)
+        await submitNewCategory(newCategory, setIsLoading)
 
         const categoriesResponse = await getCategories();
         const processedCategories = processCategories(categoriesResponse.data);
