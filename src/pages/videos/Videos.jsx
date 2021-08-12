@@ -39,7 +39,7 @@ function VideoGallery() {
 
     const onSortEnd = async ({ oldIndex, newIndex }) => {
         const reArrangeVideos = arrayMove(items, oldIndex, newIndex);
-        console.log('reArrangeVideos',reArrangeVideos)
+        console.log('reArrangeVideos', reArrangeVideos)
         setItems(reArrangeVideos);
         updateOrder(reArrangeVideos, 'video_gallery_order')
     };
@@ -84,7 +84,7 @@ function VideoGallery() {
                 is_comments_enabled: '1',
             },
             ...items
-        ]
+        ].map((item, i) => ({ ...item, key: `video[${i + 1}]` }));
         setItems(newArray);
         updateOrder(newArray, 'video_gallery_order');
         handleVideoDetails(newArray[0])
@@ -159,7 +159,7 @@ function VideoGallery() {
 
     return (
         <div>
-            {isLoading && <div style={{ position: 'fixed',zIndex:5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}
+            {isLoading && <div style={{ position: 'fixed', zIndex: 5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}
             <h1 style={{ textAlign: 'center' }}>Video Gallery</h1>
             {selectedVideo ?
                 <div style={{ maxWidth: 500, margin: 'auto' }}>

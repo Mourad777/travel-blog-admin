@@ -5,7 +5,7 @@ import { processComments } from './helper-functions'
 // const token = document.head.querySelector('meta[name="csrf-token"]');
 // const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 // console.log('token',token.content)
-//newcat newpost
+//newcat newpost getvideos
 
 const getDefaultHeader = (token) => {
     console.log('token..', token)
@@ -322,10 +322,10 @@ export const getVideos = async (setItems, setIsLoading) => {
     console.log('Fetch config response', resFetchConfigurations);
 
     setIsLoading(false)
-    const formattedVideos = resFetchVideos.data.map(item => {
+    const formattedVideos = resFetchVideos.data.map((item, index) => {
         return {
             ...item,
-            src: item.thumbnail || '/assets/icons/video-icon.jpg',
+            src: item.thumbnail || Math.random(),
             height: 1,
             width: 1.5,
             commentCount: item.comment_count,
