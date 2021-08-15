@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react'
 import { StyledRedButton } from '../../StyledComponents';
 import { useParams } from 'react-router';
 import { Checkbox, Form, TextArea } from 'semantic-ui-react'
-import { getComments, getDocument, toggleCommentApproval } from '../../utility/api';
+import { getComments, getDocument, toggleCommentApproval,deleteComment } from '../../utility/api';
 import Loader from '../../components/Loader/Loader';
 import { getPusher } from '../../utility/utility';
 
@@ -46,9 +46,13 @@ const Comments = ({ isPost, isVideo }) => {
     //     setIsLoading(false)
     // }
 
-    const handleDeleteComment = async (commentId, setIsLoading) => {
 
+    const handleDeleteComment = async (id) => {
+        const docId = params.id;
+        await deleteComment(id, setIsLoading)
+        await getComments(docId, docType, setComments, setIsLoading);
     }
+
 
     const handleCommentApproval = async (id) => {
         const docId = params.id;
@@ -88,7 +92,7 @@ const Comments = ({ isPost, isVideo }) => {
                             >
                                 <td></td>
                                 <td colSpan="4">
-                                    <Form><TextArea value={c.content} onChange={()=>console.log('disabled input')} style={{ minHeight: 100, width: '100%' }} /></Form>
+                                    <Form><TextArea value={c.content} onChange={() => console.log('disabled input')} style={{ minHeight: 100, width: '100%' }} /></Form>
                                     {/* <textarea readOnly rows="4" cols="50" style={{
                                         fontWeight: 600,
                                         border: 'none',

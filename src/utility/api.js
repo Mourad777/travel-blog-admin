@@ -28,6 +28,21 @@ export const getComments = async (docId, docType, setComments, setIsLoading) => 
     setIsLoading(false)
 }
 
+export const deleteComment = async (id, setIsLoading) => {
+    const token = localStorage.getItem('token');
+    let res;
+    setIsLoading(true)
+    try {
+        res = await axios.delete(`${AppUrl}api/comments/delete/${id}`, getDefaultHeader(token));
+
+    } catch (e) {
+        console.log('Delete comment error', e)
+        setIsLoading(false)
+    }
+    setIsLoading(false)
+    console.log('Delete comment response', res)
+}
+
 export const getDocument = async (docId, docType, setDocument, setIsLoading) => {
     setIsLoading(true)
     let res;
