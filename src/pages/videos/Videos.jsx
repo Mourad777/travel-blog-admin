@@ -45,9 +45,9 @@ function VideoGallery() {
     };
 
     const getInitialData = async () => {
-        const categoriesResponse = await getCategories();
-
-        const processedCategories = processCategories(categoriesResponse.data);
+        setIsLoading(true);
+        const categoriesResponse = await getCategories() || {};
+        const processedCategories = processCategories(categoriesResponse.data || []);
         setCategories(processedCategories);
 
         await getVideos(setItems, setIsLoading)

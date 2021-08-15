@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { StyledRedButton } from '../../StyledComponents';
 import { useParams } from 'react-router';
-import { Checkbox } from 'semantic-ui-react'
+import { Checkbox, Form, TextArea } from 'semantic-ui-react'
 import { getComments, getDocument, toggleCommentApproval } from '../../utility/api';
 import Loader from '../../components/Loader/Loader';
 import { getPusher } from '../../utility/utility';
@@ -52,13 +52,13 @@ const Comments = ({ isPost, isVideo }) => {
 
     const handleCommentApproval = async (id) => {
         const docId = params.id;
-        await toggleCommentApproval(docId, setIsLoading)
+        await toggleCommentApproval(id, setIsLoading)
         await getComments(docId, docType, setComments, setIsLoading);
     }
 
     return (
         <div style={{ margin: 'auto', maxWidth: 800 }}>
-            {isLoading && <div style={{ position: 'fixed',zIndex:5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}
+            {isLoading && <div style={{ position: 'fixed', zIndex: 5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}
             <h1>{capitalizeFirstLetter(docType)} Comments from {document.title}</h1>
             <table style={{ margin: 'auto', width: '100%' }}>
                 <tbody>
@@ -87,8 +87,9 @@ const Comments = ({ isPost, isVideo }) => {
                             }}
                             >
                                 <td></td>
-                                <td style={{ background: '#efefef', paddingLeft: 20 }} colSpan="4">
-                                    <textarea readOnly rows="4" cols="50" style={{
+                                <td colSpan="4">
+                                    <Form><TextArea value={c.content} onChange={()=>console.log('disabled input')} style={{ minHeight: 100, width: '100%' }} /></Form>
+                                    {/* <textarea readOnly rows="4" cols="50" style={{
                                         fontWeight: 600,
                                         border: 'none',
                                         background: '#efefef',
@@ -97,7 +98,7 @@ const Comments = ({ isPost, isVideo }) => {
                                         lineHeight: 1.8,
                                     }}>
                                         {c.content}
-                                    </textarea>
+                                    </textarea> */}
                                 </td>
                             </tr>
                         </Fragment>

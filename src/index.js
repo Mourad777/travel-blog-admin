@@ -20,6 +20,7 @@ const Messages = React.lazy(() => import("./pages/messages/Messages"));
 const Message = React.lazy(() => import("./pages/messages/Message"));
 const Categories = React.lazy(() => import("./pages/categories/Categories"));
 const Countries = React.lazy(() => import("./pages/countries/Countries"));
+const Settings = React.lazy(() => import("./pages/settings/Settings"));
 
 const App = () => {
 
@@ -77,6 +78,9 @@ const App = () => {
             </Route>
             <Route exact path="/message/:id">
               <Message />
+            </Route>
+            <Route exact path="/settings">
+              <Settings />
             </Route>
           </AdminLayout>
         </Switch>

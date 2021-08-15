@@ -20,8 +20,8 @@ const Categories = ({ winSize }) => {
 
     const fetchCategories = async () => {
         setIsLoading(true);
-        const categoriesResponse = await getCategories();
-        const processedCategories = processCategories(categoriesResponse.data);
+        const categoriesResponse = await getCategories() || {};
+        const processedCategories = processCategories(categoriesResponse.data || []);
         setCategories(processedCategories);
         setIsLoading(false);
     }

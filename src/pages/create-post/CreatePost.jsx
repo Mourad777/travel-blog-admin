@@ -16,6 +16,8 @@ import TagInput from '../../components/TagInput/TagInput';
 import { processCategories } from '../../utility/helper-functions';
 import { editor_photo_upload_handler, getCategories, initializePostForm, submitNewCategory, updatePostForm } from '../../utility/api';
 import Loader from '../../components/Loader/Loader';
+import { DateInput } from 'semantic-ui-calendar-react';
+import moment from 'moment'
 
 const fontStyles =
     "Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago;Merriweather=merriweather; Montserrat=montserrat; Quicksand=quicksand; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats";
@@ -37,7 +39,7 @@ const CreatePost = ({ isEditing }) => {
     const [isCommentsEnabled, setIsCommentsEnabled] = useState(true);
     const [isPublished, setIsPublished] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
-
+    const [dateWritten, setDateWritten] = useState('');
     const fileInputRef = createRef();
 
     const handleTitle = (e) => {
@@ -80,9 +82,13 @@ const CreatePost = ({ isEditing }) => {
         setIsPublished(!isPublished);
     }
 
+    const handleDate = (event, { name, value }) => {
+        setDateWritten(value);
+    }
+
     const getInitialData = async () => {
-        const categoriesResponse = await getCategories();
-        const processedCategories = processCategories(categoriesResponse.data);
+        const categoriesResponse = await getCategories() || {};
+        const processedCategories = processCategories(categoriesResponse.data) || [];
         setCategories(processedCategories);
 
         if (isEditing) {
@@ -91,6 +97,12 @@ const CreatePost = ({ isEditing }) => {
             setTitle(post.title || '');
             setAuthor(post.author || '');
             setSummary(post.summary || '');
+            const timeStamp = new Date(post.created_at).getTime();
+            console.log('timeStamp', timeStamp)
+            const formattedDate = moment(timeStamp).format("YYYY-MM-DD")
+            // moment(timeStamp).format("dddd, MMMM DD YYYY, HH:mm")
+
+            setDateWritten(post.date_written || formattedDate)
             setIsPublished(!!parseInt(post.is_published));
             setIsCommentsEnabled(!!parseInt(post.is_comments_enabled));
             setSelectedCategories(post.categories.map(cat => cat.name));
@@ -138,6 +150,7 @@ const CreatePost = ({ isEditing }) => {
         formData.append('title', title || '');
         formData.append('author', author || '');
         formData.append('summary', summary || '');
+        formData.append('date_written', dateWritten || '');
         formData.append('content', content || 'Write something...');
         formData.append('selected_categories', JSON.stringify(selectedCategoriesIds));
         formData.append('tags', JSON.stringify(tags));
@@ -164,7 +177,7 @@ const CreatePost = ({ isEditing }) => {
 
     return (
         <div style={{ margin: 'auto', maxWidth: 800 }}>
-            {isLoading && <div style={{ position: 'fixed',zIndex:5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}
+            {isLoading && <div style={{ position: 'fixed', zIndex: 5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}
 
             <h1>{isEditing ? 'Edit Post' : 'New Post'}</h1>
 
@@ -236,6 +249,19 @@ const CreatePost = ({ isEditing }) => {
                     </Dropdown.Menu>
                 </Dropdown>
             </Segment>
+            <div style={{ marginTop: 20 }}>
+                <label style={{ fontSize: '1.2em' }}>Date Written</label>
+                <div>
+                    <DateInput
+                        name="date"
+                        placeholder="Date Written"
+                        value={dateWritten}
+                        iconPosition="left"
+                        onChange={handleDate}
+                        dateFormat="YYYY-MM-DD"
+                    />
+                </div>
+            </div>
             <div style={{ marginTop: 20 }}>
                 <label style={{ fontSize: '1.2em' }}>Tags</label>
                 <TagInput values={tags} onChange={handleTags} />

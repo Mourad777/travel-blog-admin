@@ -2,11 +2,6 @@ import axios from 'axios'
 import { AppUrl } from './utility'
 import { processComments } from './helper-functions'
 
-// const token = document.head.querySelector('meta[name="csrf-token"]');
-// const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-// console.log('token',token.content)
-//newcat newpost getvideos
-
 const getDefaultHeader = (token) => {
     console.log('token..', token)
     return {
@@ -16,12 +11,13 @@ const getDefaultHeader = (token) => {
         }
     }
 }
-//comments api
+
 export const getComments = async (docId, docType, setComments, setIsLoading) => {
+    const token = localStorage.getItem('token');
     setIsLoading(true)
     let res;
     try {
-        res = await axios.get(`${AppUrl}api/comments/${docType}/${docId}`);
+        res = await axios.get(`${AppUrl}api/comments/${docType}/${docId}`, getDefaultHeader(token));
     } catch (e) {
         setIsLoading(false)
         console.log('Fetch comments response error', res);
@@ -69,7 +65,7 @@ export const toggleCommentApproval = async (id, setIsLoading) => {
 
 export const getCountryThumbnails = async (setCountryThumbnails, setIsLoading) => {
     setIsLoading(true)
-    let fetchCountryThumbnailsResponse;
+    let fetchCountryThumbnailsResponse = {};
     try {
         fetchCountryThumbnailsResponse = await axios.get(`${AppUrl}api/countries`);
     } catch (e) {
@@ -78,7 +74,7 @@ export const getCountryThumbnails = async (setCountryThumbnails, setIsLoading) =
     }
     setIsLoading(false)
     console.log('Fetch Country Thumbnails Response', fetchCountryThumbnailsResponse);
-    setCountryThumbnails(fetchCountryThumbnailsResponse.data);
+    setCountryThumbnails(fetchCountryThumbnailsResponse.data || []);
 }
 
 export const uploadCountryThumbnail = async (formData, setIsLoading) => {
@@ -209,7 +205,7 @@ export const updateOrder = async (items, galleryType) => {
 
 export const getPhotos = async (setItems, setIsLoading) => {
     const fetchPhotosUrl = `${AppUrl}api/photos`;
-    let resFetchPhotos;
+    let resFetchPhotos = {};
     setIsLoading(true);
     try {
         resFetchPhotos = await axios.get(fetchPhotosUrl);
@@ -223,7 +219,7 @@ export const getPhotos = async (setItems, setIsLoading) => {
     console.log('Fetch photos response', resFetchPhotos);
 
     const fetchConfigUrl = `${AppUrl}api/configurations`;
-    let resFetchConfigurations;
+    let resFetchConfigurations = {};
     try {
         resFetchConfigurations = await axios.get(fetchConfigUrl);
 
@@ -236,7 +232,7 @@ export const getPhotos = async (setItems, setIsLoading) => {
     console.log('Fetch config response', resFetchConfigurations);
 
     setIsLoading(false)
-    const formattedPhotos = resFetchPhotos.data.map(item => {
+    const formattedPhotos = (resFetchPhotos.data || []).map(item => {
         return {
             ...item,
             src: item.src,
@@ -246,8 +242,8 @@ export const getPhotos = async (setItems, setIsLoading) => {
         }
     });
 
-    if (resFetchConfigurations.data !== 'no_config') {
-        const order = JSON.parse(resFetchConfigurations.data.photo_gallery_order);
+    if (resFetchConfigurations.data !== 'no_config' && !!resFetchConfigurations.data) {
+        const order = JSON.parse(resFetchConfigurations.data.photo_gallery_order) || [];
         const orderedFormattedPhotos = [];
         order.forEach(number => {
             formattedPhotos.forEach(photo => {
@@ -301,7 +297,7 @@ export const updateVideoDetails = async (id, formData, setIsLoading) => {
 export const getVideos = async (setItems, setIsLoading) => {
     const fetchVideosUrl = `${AppUrl}api/videos`;
     setIsLoading(true);
-    let resFetchVideos;
+    let resFetchVideos = {};
     try {
         resFetchVideos = await axios.get(fetchVideosUrl);
     } catch (e) {
@@ -312,7 +308,7 @@ export const getVideos = async (setItems, setIsLoading) => {
     console.log('Fetch videos response', resFetchVideos);
 
     const fetchConfigUrl = `${AppUrl}api/configurations`;
-    let resFetchConfigurations;
+    let resFetchConfigurations = {};
     try {
         resFetchConfigurations = await axios.get(fetchConfigUrl);
     } catch (e) {
@@ -322,7 +318,7 @@ export const getVideos = async (setItems, setIsLoading) => {
     console.log('Fetch config response', resFetchConfigurations);
 
     setIsLoading(false)
-    const formattedVideos = resFetchVideos.data.map((item, index) => {
+    const formattedVideos = (resFetchVideos.data || []).map((item, index) => {
         return {
             ...item,
             src: item.thumbnail || Math.random(),
@@ -334,8 +330,8 @@ export const getVideos = async (setItems, setIsLoading) => {
         }
     });
 
-    if (resFetchConfigurations.data !== 'no_config') {
-        const order = JSON.parse(resFetchConfigurations.data.video_gallery_order);
+    if (resFetchConfigurations.data !== 'no_config' && !!resFetchConfigurations.data) {
+        const order = JSON.parse(resFetchConfigurations.data.video_gallery_order) || [];
         const orderedFormattedVideos = [];
         order.forEach(number => {
             formattedVideos.forEach(video => {
@@ -397,7 +393,7 @@ export const uploadPhoto = async (formData, items, setIsLoading) => {
 
     const savePhotoUrl = `${AppUrl}api/photos/save`;
     setIsLoading(true)
-    let resUploadPhoto;
+    let resUploadPhoto = {};
     try {
         resUploadPhoto = await axios.post(
             savePhotoUrl,
@@ -476,7 +472,7 @@ export const deleteCategory = async (id, setIsLoading) => {
 
 //posts api
 export const getPosts = async (setPosts, setIsLoading) => {
-    let res;
+    let res = {};
     setIsLoading(true)
     try {
         res = await axios.get(`${AppUrl}api/posts`);
@@ -486,7 +482,7 @@ export const getPosts = async (setPosts, setIsLoading) => {
         setIsLoading(false)
     }
     console.log('Fetch posts response', res)
-    const posts = res.data;
+    const posts = res.data || [];
     setPosts(posts);
     setIsLoading(false)
 }
@@ -544,7 +540,7 @@ export const deletePost = async (id, setIsLoading) => {
 
 export const getMessages = async (setMessages, setIsLoading) => {
     setIsLoading(true)
-    let res;
+    let res = {};
     try {
         res = await axios.get(`${AppUrl}api/messages`);
     } catch (e) {
@@ -553,7 +549,7 @@ export const getMessages = async (setMessages, setIsLoading) => {
     }
     setIsLoading(false)
     console.log('Fetch messages response', res)
-    const messages = res.data;
+    const messages = res.data || [];
     setMessages(messages);
 }
 
@@ -571,6 +567,41 @@ export const getMessage = async (messageId, setMessage, setIsLoading) => {
     console.log('Fetch message response', res)
     const message = res.data;
     setMessage(message);
+}
+
+export const getConfiguration = async (setIsLoading) => {
+    const url = `${AppUrl}api/configurations`;
+    let configResponse = {};
+    setIsLoading(true);
+    try {
+        configResponse = await axios.get(url);
+    } catch (e) {
+        setIsLoading(false)
+        console.log('Fetch configuration response error: ', e)
+    }
+
+    setIsLoading(false)
+    console.log('Fetch configuration response: ', configResponse);
+    return configResponse.data || {};
+}
+
+export const updateConfiguration = async (formData, setIsLoading) => {
+    const token = localStorage.getItem('token');
+    const url = `${AppUrl}api/configurations/update`;
+    let configResponse;
+    setIsLoading(true);
+    try {
+        configResponse = await axios.post(
+            url,
+            formData,
+            getDefaultHeader(token)
+        );
+    } catch (e) {
+        setIsLoading(false)
+        console.log('Update configuration response error: ', e)
+    }
+    setIsLoading(false)
+    console.log('Update configuration response: ', configResponse)
 }
 
 

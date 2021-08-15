@@ -217,9 +217,8 @@ export default function PersistentDrawerLeft({ children }) {
                 <List>
                     {[
                         { text: 'Messages', icon: MailIcon, url: '/messages' },
-                        // { text: 'Settings', icon: SettingsIcon, url: '/settings' },
+                        { text: 'Settings', icon: SettingsIcon, url: '/settings' },
                         { text: 'Logout', icon: LockIcon, url: '/login' },
-                        // { text: 'Videos', icon: VideoIcon, url: '/videos' },
                     ].map((item, index) => (
                         <ListItem
                             style={item.url === location ? { background: 'rgb(240,240,240)' } : {}}

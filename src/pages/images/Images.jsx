@@ -41,16 +41,17 @@ function PhotoGallery() {
 
     const onSortEnd = async ({ oldIndex, newIndex }) => {
         const reArrangedPhotos = arrayMove(items, oldIndex, newIndex);
-        console.log('reArrangedPhotos',reArrangedPhotos)
+        console.log('reArrangedPhotos', reArrangedPhotos)
         setItems(reArrangedPhotos);
         //update order
         updateOrder(reArrangedPhotos, 'photo_gallery_order')
     };
 
     const getInitialData = async () => {
-        const categoriesResponse = await getCategories();
+        setIsLoading(true);
+        const categoriesResponse = await getCategories() || {};
 
-        const processedCategories = processCategories(categoriesResponse.data);
+        const processedCategories = processCategories(categoriesResponse.data || []);
         setCategories(processedCategories);
 
         getPhotos(setItems, setIsLoading)
@@ -93,7 +94,7 @@ function PhotoGallery() {
                 newPhotoFormData.append('date_taken', DateTime);
 
                 const newArray = await uploadPhoto(newPhotoFormData, items, setIsLoading)
-                
+
                 setItems(newArray);
                 updateOrder(newArray, 'photo_gallery_order')
                 handleImageDetails(newArray[0])
@@ -175,7 +176,7 @@ function PhotoGallery() {
     }
     return (
         <div>
-            {isLoading && <div style={{ position: 'fixed',zIndex:5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}
+            {isLoading && <div style={{ position: 'fixed', zIndex: 5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}
 
             <h1 style={{ textAlign: 'center' }}>Photo Gallery</h1>
             {selectedPhoto ?
@@ -197,7 +198,9 @@ function PhotoGallery() {
                     </div>
                     <div style={{ marginTop: 20 }}>
                         <label style={{ fontSize: '1.2em' }}>Date Taken</label>
-                        <div style={{ paddingLeft: 38 }}>
+                        <div
+                        //  style={{ paddingLeft: 38 }}
+                        >
                             <DateInput
                                 name="date"
                                 placeholder="Date Taken"
