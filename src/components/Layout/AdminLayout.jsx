@@ -19,12 +19,11 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import MailIcon from '@material-ui/icons/Mail'
 import SettingsIcon from '@material-ui/icons/Settings'
-import StarBorder from '@material-ui/icons/StarBorder'
 import PostAddIcon from '@material-ui/icons/PostAdd';
-import CommentIcon from '@material-ui/icons/Comment';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import PhotoIcon from '@material-ui/icons/PhotoLibrary'
@@ -33,6 +32,7 @@ import { useHistory } from 'react-router';
 import CategoriesIcon from '@material-ui/icons/AccountTree';
 import CountriesIcon from '@material-ui/icons/Public';
 import { logout } from '../../utility/api';
+import { Fragment } from 'react';
 
 const drawerWidth = 240;
 
@@ -101,7 +101,7 @@ const endSession = async () => {
     localStorage.removeItem('token')
 }
 
-export default function PersistentDrawerLeft({ children }) {
+export default function Layout({ children, isLoggedIn,onLogin }) {
     const classes = useStyles();
     const theme = useTheme();
     const history = useHistory();
@@ -133,7 +133,6 @@ export default function PersistentDrawerLeft({ children }) {
             setNestedOpen(true)
         }
     }, []);
-
 
     return (
         <div className={classes.root}>
@@ -174,73 +173,102 @@ export default function PersistentDrawerLeft({ children }) {
                     </IconButton>
                 </div>
                 <Divider />
-                <List>
+                {isLoggedIn ?
+                    <Fragment>
+                        <List>
 
 
-                    <ListItem button onClick={handleClick}>
-                        <ListItemIcon>
-                            <ChromeReaderModeIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Posts" />
-                        {nestedOpen ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                    <Collapse in={nestedOpen} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
+                            <ListItem button onClick={handleClick}>
+                                <ListItemIcon>
+                                    <ChromeReaderModeIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Posts" />
+                                {nestedOpen ? <ExpandLess /> : <ExpandMore />}
+                            </ListItem>
+                            <Collapse in={nestedOpen} timeout="auto" unmountOnExit>
+                                <List component="div" disablePadding>
+                                    {[
+                                        { text: 'New post', icon: PostAddIcon, url: '/create-post' },
+                                        { text: 'View posts', icon: DynamicFeedIcon, url: '/posts' },
+                                        // { text: 'Comments', icon: CommentIcon }
+                                    ].map((item, index) => (
+                                        <ListItem style={item.url === location ? { background: 'rgb(240,240,240)' } : {}} onClick={() => history.push(item.url)} button key={item.text} className={classes.nested}>
+                                            <ListItemIcon><item.icon /></ListItemIcon>
+                                            <ListItemText primary={item.text} />
+                                        </ListItem>
+                                    ))}
+
+                                </List>
+                            </Collapse>
+
+
                             {[
-                                { text: 'New post', icon: PostAddIcon, url: '/create-post' },
-                                { text: 'View posts', icon: DynamicFeedIcon, url: '/posts' },
-                                // { text: 'Comments', icon: CommentIcon }
+                                { text: 'Photos', icon: PhotoIcon, url: '/photos' },
+                                { text: 'Videos', icon: VideoIcon, url: '/videos' },
+                                { text: 'Categories', icon: CategoriesIcon, url: '/categories' },
+                                { text: 'Countries', icon: CountriesIcon, url: '/countries' },
                             ].map((item, index) => (
-                                <ListItem style={item.url === location ? { background: 'rgb(240,240,240)' } : {}} onClick={() => history.push(item.url)} button key={item.text} className={classes.nested}>
+                                <ListItem style={item.url === location ? { background: 'rgb(240,240,240)' } : {}} onClick={() => history.push(item.url)} button key={item.text}>
+                                    <ListItemIcon><item.icon /></ListItemIcon>
+                                    <ListItemText primary={item.text} />
+                                </ListItem>
+                            ))}
+                        </List>
+                        <Divider />
+                        <List>
+                            {[
+                                { text: 'Messages', icon: MailIcon, url: '/messages' },
+                                { text: 'Settings', icon: SettingsIcon, url: '/settings' },
+                                { text: 'Logout', icon: LockIcon, url: '/login' },
+                            ].map((item, index) => (
+                                <ListItem
+                                    style={item.url === location ? { background: 'rgb(240,240,240)' } : {}}
+                                    onClick={async () => {
+                                        if (item.text === 'Logout') {
+                                            await endSession();
+                                            onLogin(false);
+                                            history.push(item.url);
+                                        } else {
+                                            history.push(item.url)
+                                        }
+                                    }
+
+                                    } button key={item.text}
+                                >
                                     <ListItemIcon><item.icon /></ListItemIcon>
                                     <ListItemText primary={item.text} />
                                 </ListItem>
                             ))}
 
+
                         </List>
-                    </Collapse>
+                    </Fragment>
+                    :
+                    <List>
+                        {[
+                            { text: 'Login', icon: LockOpenIcon, url: '/login' },
+                            { text: 'Register', icon: AssignmentIndIcon, url: '/register' },
+                        ].map((item, index) => (
+                            <ListItem
+                                style={item.url === location ?
+                                    { background: 'rgb(240,240,240)' } : {}}
+                                onClick={() => history.push(item.url)}
+                                button
+                                key={item.text}
+                            >
+                                <ListItemIcon><item.icon /></ListItemIcon>
+                                <ListItemText primary={item.text} />
+                            </ListItem>
+                        ))}
 
 
-                    {[
-                        { text: 'Photos', icon: PhotoIcon, url: '/photos' },
-                        { text: 'Videos', icon: VideoIcon, url: '/videos' },
-                        { text: 'Categories', icon: CategoriesIcon, url: '/categories' },
-                        { text: 'Countries', icon: CountriesIcon, url: '/countries' },
-                    ].map((item, index) => (
-                        <ListItem style={item.url === location ? { background: 'rgb(240,240,240)' } : {}} onClick={() => history.push(item.url)} button key={item.text}>
-                            <ListItemIcon><item.icon /></ListItemIcon>
-                            <ListItemText primary={item.text} />
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {[
-                        { text: 'Messages', icon: MailIcon, url: '/messages' },
-                        { text: 'Settings', icon: SettingsIcon, url: '/settings' },
-                        { text: 'Logout', icon: LockIcon, url: '/login' },
-                    ].map((item, index) => (
-                        <ListItem
-                            style={item.url === location ? { background: 'rgb(240,240,240)' } : {}}
-                            onClick={async () => {
-                                if (item.text === 'Logout') {
-                                    await endSession()
-                                    history.push(item.url);
-                                } else {
-                                    history.push(item.url)
-                                }
-                            }
+                    </List>
 
-                            } button key={item.text}
-                        >
-                            <ListItemIcon><item.icon /></ListItemIcon>
-                            <ListItemText primary={item.text} />
-                        </ListItem>
-                    ))}
+                }
 
-
-                </List>
             </Drawer>
+
+
             <main
                 className={clsx(classes.content, {
                     [classes.contentShift]: open,

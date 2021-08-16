@@ -7,6 +7,7 @@ import { getWindowSizeInteger } from "./utility/utility";
 import _ from "lodash";
 import Loader from "./components/Loader/Loader";
 import 'semantic-ui-css/semantic.min.css';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 const AdminLayout = React.lazy(() => import("./components/Layout/AdminLayout"));
 const RegisterUser = React.lazy(() => import("./pages/register/Register"));
@@ -25,8 +26,17 @@ const Settings = React.lazy(() => import("./pages/settings/Settings"));
 const App = () => {
 
   const [winSize, setWinSize] = useState(getWindowSizeInteger(window.innerWidth));
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = (isLoggedIn) => {
+    setIsLoggedIn(isLoggedIn)
+  }
 
   useEffect(() => {
+    if (!!localStorage.getItem('token')) {
+      handleLogin(true)
+    }
+
     window.addEventListener("resize", _.throttle(getWindowSize, 200), { passive: true });
   }, []);
 
@@ -39,49 +49,25 @@ const App = () => {
     <BrowserRouter>
       <React.Suspense fallback={<div style={{ position: 'fixed', zIndex: 5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}>
         <Switch>
-          <AdminLayout>
+          <AdminLayout onLogin={handleLogin} isLoggedIn={isLoggedIn}>
             <Route exact path="/register">
-              <RegisterUser winSize={winSize} />
+              <RegisterUser onLogin={handleLogin} winSize={winSize} />
             </Route>
             <Route exact path="/login">
-              <Login winSize={winSize} />
+              <Login onLogin={handleLogin} winSize={winSize} />
             </Route>
-            <Route exact path="/posts">
-              <Posts winSize={winSize} />
-            </Route>
-            <Route exact path="/post/:id/comments">
-              <Comments isPost />
-            </Route>
-            <Route exact path="/video/:id/comments">
-              <Comments isVideo />
-            </Route>
-            <Route exact path="/create-post">
-              <CreatePost />
-            </Route>
-            <Route exact path="/edit-post/:id">
-              <CreatePost isEditing />
-            </Route>
-            <Route exact path="/photos">
-              <Images />
-            </Route>
-            <Route exact path="/videos">
-              <Videos />
-            </Route>
-            <Route exact path="/categories">
-              <Categories />
-            </Route>
-            <Route exact path="/countries">
-              <Countries />
-            </Route>
-            <Route exact path="/messages">
-              <Messages />
-            </Route>
-            <Route exact path="/message/:id">
-              <Message />
-            </Route>
-            <Route exact path="/settings">
-              <Settings />
-            </Route>
+            <PrivateRoute isLoggedIn={isLoggedIn} winSize={winSize} path="/posts" component={Posts} />
+            <PrivateRoute isLoggedIn={isLoggedIn} isPost path="/post/:id/comments" component={Comments} />
+            <PrivateRoute isLoggedIn={isLoggedIn} isVideo path="/video/:id/comments" component={Comments} />
+            <PrivateRoute isLoggedIn={isLoggedIn} path="/create-post" component={CreatePost} />
+            <PrivateRoute isLoggedIn={isLoggedIn} path="/edit-post/:id" isEditing component={CreatePost} />
+            <PrivateRoute isLoggedIn={isLoggedIn} path="/photos" component={Images} />
+            <PrivateRoute isLoggedIn={isLoggedIn} path="/videos" component={Videos} />
+            <PrivateRoute isLoggedIn={isLoggedIn} path="/categories" component={Categories} />
+            <PrivateRoute isLoggedIn={isLoggedIn} path="/countries" component={Countries} />
+            <PrivateRoute isLoggedIn={isLoggedIn} path="/messages" component={Messages} />
+            <PrivateRoute isLoggedIn={isLoggedIn} path="/message/:id" component={Message} />
+            <PrivateRoute isLoggedIn={isLoggedIn} path="/settings" component={Settings} />
           </AdminLayout>
         </Switch>
       </React.Suspense>

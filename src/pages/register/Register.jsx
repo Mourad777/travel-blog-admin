@@ -5,7 +5,7 @@ import Loader from '../../components/Loader/Loader';
 import { useHistory } from 'react-router';
 import { registerUser } from '../../utility/api';
 
-const RegisterUser = ({ }) => {
+const RegisterUser = ({ onLogin }) => {
     const history = useHistory();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -47,6 +47,7 @@ const RegisterUser = ({ }) => {
             formData.append('password', password || '');
             const url = `${AppUrl}api/register`;
             await registerUser(url, formData, setIsLoading);
+            onLogin(true);
             history.push('/create-post');
         }
     }

@@ -5,7 +5,7 @@ import Loader from '../../components/Loader/Loader';
 import { useHistory } from 'react-router';
 import { login } from '../../utility/api';
 
-const Login = ({ }) => {
+const Login = ({ onLogin }) => {
     const history = useHistory();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -30,6 +30,7 @@ const Login = ({ }) => {
             formData.append('password', password || '');
             const url = `${AppUrl}api/login`;
             await login(url, formData, setIsLoading);
+            onLogin(true);
             history.push('/posts');
         }
     }
