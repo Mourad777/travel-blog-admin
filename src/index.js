@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { getWindowSizeInteger } from "./utility/utility";
 import _ from "lodash";
 import Loader from "./components/Loader/Loader";
@@ -68,6 +68,7 @@ const App = () => {
             <PrivateRoute isLoggedIn={isLoggedIn} path="/messages" component={Messages} />
             <PrivateRoute isLoggedIn={isLoggedIn} path="/message/:id" component={Message} />
             <PrivateRoute isLoggedIn={isLoggedIn} path="/settings" component={Settings} />
+            {isLoggedIn ? <Redirect to="/posts" /> : <Redirect to="/login" />}
           </AdminLayout>
         </Switch>
       </React.Suspense>

@@ -71,11 +71,11 @@ const RegisterUser = ({ onLogin }) => {
             </div>
             <div style={{ marginTop: 20 }}>
                 <label style={{ fontSize: '1.2em' }}>Password</label>
-                <StyledFormTextInput value={password} onChange={handlePassword} placeholder='Password' />
+                <StyledFormTextInput type="password" value={password} onChange={handlePassword} placeholder='Password' />
             </div>
             <div style={{ marginTop: 20 }}>
                 <label style={{ fontSize: '1.2em' }}>Confirm Password</label>
-                <StyledFormTextInput value={confirmPassword} onChange={handleConfirmPassword} placeholder='Confirm Password' />
+                <StyledFormTextInput type="password" value={confirmPassword} onChange={handleConfirmPassword} placeholder='Confirm Password' />
             </div>
             <div style={{ textAlign: 'center', padding: '20px 0' }}>
                 <StyledSubmitButton onClick={handleForm} >{'Submit'}</StyledSubmitButton>
