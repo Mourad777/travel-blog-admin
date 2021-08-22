@@ -7,7 +7,7 @@ import {
     StyledSubmitButton,
     StyledThumbnailPreview,
 } from '../../StyledComponents';
-import { AppUrl, getFileName, getPusher } from '../../utility/utility';
+import { AppUrl, getFileName, getPusher, resizeImageFn } from '../../utility/utility';
 import { Checkbox, Segment, Dropdown } from 'semantic-ui-react'
 import { countries } from "../../utility/countries-iso";
 import TagInput from "../../components/TagInput/TagInput";

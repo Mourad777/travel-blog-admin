@@ -10,7 +10,7 @@ import {
 import { Checkbox, Segment, Dropdown, TextArea, Form } from 'semantic-ui-react'
 import './editor.css'
 import { useParams, useHistory } from 'react-router';
-import { AppUrl } from '../../utility/utility';
+import { AppUrl, resizeImageFn } from '../../utility/utility';
 import { countries } from '../../utility/countries-iso';
 import TagInput from '../../components/TagInput/TagInput';
 import { processCategories } from '../../utility/helper-functions';
