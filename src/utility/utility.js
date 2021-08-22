@@ -1,5 +1,7 @@
 import Pusher from "pusher-js";
 import { v1 } from "uuid";
+import Compress from 'compress.js'
+const compress = new Compress();
 
 export const getFileName = (filename) => {
 
@@ -20,9 +22,6 @@ export const getWindowSizeInteger = windowWidth => {
     if (windowWidth >= 3840) widthInteger = 5; //4k
     return widthInteger;
 };
-
-import Compress from 'compress.js'
-const compress = new Compress();
 
 export const resizeImageFn = async (file) => {
 
