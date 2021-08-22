@@ -135,7 +135,7 @@ function VideoGallery() {
     };
 
     const submitCategory = async () => {
-        submitNewCategory(newCategory, setIsLoading)
+        await submitNewCategory(newCategory, setIsLoading)
         const categoriesResponse = await getCategories();
         const processedCategories = processCategories(categoriesResponse.data);
         setCategories(processedCategories);

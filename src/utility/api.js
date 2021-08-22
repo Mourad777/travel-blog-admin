@@ -176,6 +176,26 @@ export const submitNewCategory = async (newCategory, setIsLoading) => {
     console.log('New category response: ', newCategoryResponse)
 }
 
+export const updateCategory = async (category, id, setIsLoading) => {
+    const token = localStorage.getItem('token');
+
+    const formData = new FormData();
+    formData.append('name', category);
+    let updateCategoryResponse;
+    setIsLoading(true);
+    try {
+        updateCategoryResponse = await axios.post(
+            `${AppUrl}api/categories/update/${id}`,
+            formData,
+            getDefaultHeader(token));
+    } catch (e) {
+        console.log('Update category response error', e);
+        setIsLoading(false);
+    }
+    console.log('Update category response', updateCategoryResponse)
+    setIsLoading(false);
+}
+
 export const getCategoryContent = async (countryIso, selectedCategory, setPosts, setPhotos, setVideos) => {
     let url;
     if (countryIso) {

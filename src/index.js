@@ -26,6 +26,7 @@ const Settings = React.lazy(() => import("./pages/settings/Settings"));
 const App = () => {
 
   const [winSize, setWinSize] = useState(getWindowSizeInteger(window.innerWidth));
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLogin = (isLoggedIn) => {
@@ -68,7 +69,8 @@ const App = () => {
             <PrivateRoute isLoggedIn={isLoggedIn} path="/messages" component={Messages} />
             <PrivateRoute isLoggedIn={isLoggedIn} path="/message/:id" component={Message} />
             <PrivateRoute isLoggedIn={isLoggedIn} path="/settings" component={Settings} />
-            {isLoggedIn ? <Redirect to="/posts" /> : <Redirect to="/login" />}
+            {/* {isLoggedIn ? <Redirect to="/posts" /> : <Redirect to="/login" />} */}
+            {!isLoggedIn && (<Redirect to="/login" />)}
           </AdminLayout>
         </Switch>
       </React.Suspense>

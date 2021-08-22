@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { AppUrl } from '../../utility/utility';
-import axios from 'axios'
 import { List, Icon } from "semantic-ui-react";
 import { StyledBlueButton, StyledFormTextInput, StyledRedButton, StyledSubmitButton } from '../../StyledComponents';
 import Loader from '../../components/Loader/Loader';
 import { processCategories } from '../../utility/helper-functions';
-import { deleteCategory, getCategories, submitNewCategory } from '../../utility/api';
+import { deleteCategory, getCategories, submitNewCategory, updateCategory } from '../../utility/api';
 
-const Categories = ({ winSize }) => {
+const Categories = ({ }) => {
 
     const [categories, setCategories] = useState([]);
     const [categoryEditing, setCategoryEditing] = useState(null);
     const [newCategory, setNewCategory] = useState('');
     const [existingCategory, setExistingCategory] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-
-
-
 
     const fetchCategories = async () => {
         setIsLoading(true);
@@ -60,21 +55,9 @@ const Categories = ({ winSize }) => {
     }
 
     const updateExistingCategory = async (id) => {
-        const formData = new FormData();
-        formData.append('name', existingCategory);
-        let updateCategoryResponse;
-        setIsLoading(true);
-        try {
-            updateCategoryResponse = await axios.post(`${AppUrl}api/categories/update/${id}`, formData,
-                {
-                    headers: { 'Content-Type': 'multipart/form-data' }
-                });
-        } catch (e) {
-            console.log('Update category response error', e);
-            setIsLoading(false);
-        }
-        console.log('Update category response', updateCategoryResponse)
-        setIsLoading(false);
+
+        await updateCategory(existingCategory,id,setIsLoading)
+
         setExistingCategory('');
         fetchCategories();
         setCategoryEditing(null)

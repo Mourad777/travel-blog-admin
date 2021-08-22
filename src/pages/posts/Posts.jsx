@@ -7,6 +7,7 @@ import Loader from '../../components/Loader/Loader';
 import { getPusher } from '../../utility/utility';
 
 const Posts = ({ winSize }) => {
+
     const history = useHistory();
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState([]);
@@ -43,8 +44,8 @@ const Posts = ({ winSize }) => {
             <table style={{ margin: 'auto', width: '100%' }}>
                 <tbody>
 
-                    {winSize > 1 && (<tr><th style={{ fontSize: '1.2em' }}></th><th style={{ fontSize: '1.2em' }}>Title</th><th style={{ fontSize: '1.2em' }}>Author</th><th style={{ fontSize: '1.2em' }}>Published</th></tr>)}
-
+                    {winSize > 1 && (<tr><th style={{ fontSize: '1.2em' }}></th><th style={{ fontSize: '1.2em',textAlign:'left' }}>Title</th><th style={{ fontSize: '1.2em' }}>Author</th><th style={{ fontSize: '1.2em' }}>Published</th></tr>)}
+       
                     {posts.map(p => (
                         <Fragment key={p.id}>
                             <tr>
