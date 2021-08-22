@@ -76,7 +76,7 @@ function PhotoGallery() {
 
         const newPhotoFormData = new FormData();
         newPhotoFormData.append('image', file);
-        EXIF.getData(file, async function () {
+        EXIF.getData(originalFile, async function () {
             const photoMetaData = this.exifdata;
             const isMetaDataEmpty = photoMetaData && Object.keys(photoMetaData).length === 0 && photoMetaData.constructor === Object;
             if (!isMetaDataEmpty) {
