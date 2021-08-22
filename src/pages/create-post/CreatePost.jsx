@@ -134,12 +134,15 @@ const CreatePost = ({ isEditing }) => {
         e.preventDefault()
         const formData = new FormData();
         if (file && !isEditing) {
-            formData.append('image', file);
+            // const file = await resizeImageFn(e.target.files[0]);
+            const compressedFile = await resizeImageFn(file);
+            formData.append('image', compressedFile);
         }
         if (file && isEditing) {
             if (file instanceof File) {
                 //this will be an updated image
-                formData.append('image', file);
+                const compressedFile = await resizeImageFn(file);
+                formData.append('image', compressedFile);
             } else {
                 //this will be the unchanged image
                 formData.append('image', 'sameImage');

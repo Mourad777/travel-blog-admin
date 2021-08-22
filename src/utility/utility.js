@@ -21,11 +21,30 @@ export const getWindowSizeInteger = windowWidth => {
     return widthInteger;
 };
 
+import Compress from 'compress.js'
+const compress = new Compress();
+
+export const resizeImageFn = async (file) => {
+
+    const resizedImage = await compress.compress([file], {
+        size: 8, // the max size in MB, defaults to 2MB
+        quality: 1, // the quality of the image, max is 1,
+        maxWidth: 800, // the max width of the output image, defaults to 1920px
+        maxHeight: 600, // the max height of the output image, defaults to 1920px
+        resize: true // defaults to true, set false if you do not want to resize the image width and height
+    })
+    const img = resizedImage[0];
+    const base64str = img.data
+    const imgExt = img.ext
+    const resizedFiile = Compress.convertBase64ToFile(base64str, imgExt)
+    return resizedFiile;
+}
 
 
 
-// export const AppUrl = 'http://localhost:8000/';
-export let AppUrl = 'https://stormy-forest-71570.herokuapp.com/';
+
+export const AppUrl = 'http://localhost:8000/';
+// export let AppUrl = 'https://stormy-forest-71570.herokuapp.com/';
 // if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
 //     // AppUrl = 'http://localhost:8000/';
 //     AppUrl = 'https://stormy-forest-71570.herokuapp.com/';

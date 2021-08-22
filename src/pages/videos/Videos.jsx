@@ -108,7 +108,8 @@ function VideoGallery() {
         if (!!thumbnail) {
             if (thumbnail instanceof File) {
                 //this will be an updated image
-                formData.append('thumbnail', thumbnail);
+                const compressedFile = await resizeImageFn(thumbnail);
+                formData.append('thumbnail', compressedFile);
             } else {
                 //this will be the unchanged image
                 formData.append('thumbnail', 'sameThumbnail');

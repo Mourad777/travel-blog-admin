@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AppUrl } from './utility'
+import { AppUrl, resizeImageFn } from './utility'
 import { processComments } from './helper-functions'
 
 const getDefaultHeader = (token) => {
@@ -511,7 +511,7 @@ export const getPosts = async (setPosts, setIsLoading) => {
     let res = {};
     setIsLoading(true)
     try {
-        res = await axios.get(`${AppUrl}api/posts`,getDefaultHeader(token));
+        res = await axios.get(`${AppUrl}api/posts`, getDefaultHeader(token));
 
     } catch (e) {
         console.log('Fetch posts error', e)
@@ -528,7 +528,7 @@ export const initializePostForm = async (id, setIsLoading) => {
     let res;
     setIsLoading(true)
     try {
-        res = await axios.get(`${AppUrl}api/posts/edit/${id}`,getDefaultHeader(token));
+        res = await axios.get(`${AppUrl}api/posts/edit/${id}`, getDefaultHeader(token));
 
     } catch (e) {
         console.log('Fetch post error', e)
@@ -646,7 +646,8 @@ export const updateConfiguration = async (formData, setIsLoading) => {
 export const editor_photo_upload_handler = async (blobInfo, success, failure, progress) => {
     const token = localStorage.getItem('token');
     const formData = new FormData();
-    formData.append('image', blobInfo.blob());
+    const compressedFile = await resizeImageFn(blobInfo.blob());
+    formData.append('image', compressedFile);
     const res = await axios.post(
         `${AppUrl}api/tinymce/upload`,
         formData,

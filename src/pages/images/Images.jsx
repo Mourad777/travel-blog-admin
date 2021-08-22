@@ -12,6 +12,8 @@ import { processCategories } from "../../utility/helper-functions";
 import { deletePhoto, getCategories, getPhotos, submitNewCategory, updateOrder, updatePhotoDetails, uploadPhoto } from "../../utility/api";
 import SortableGallery from '../gallery/Gallery'
 import Loader from "../../components/Loader/Loader";
+import { resizeImageFn } from "../../utility/utility";
+
 
 function PhotoGallery() {
     const [items, setItems] = useState([]);
@@ -68,7 +70,10 @@ function PhotoGallery() {
     const handleImageUpload = async e => {
 
         e.preventDefault()
-        const file = e.target.files[0];
+        const originalFile = e.target.files[0];
+
+        const file = await resizeImageFn(originalFile);
+
         const newPhotoFormData = new FormData();
         newPhotoFormData.append('image', file);
         EXIF.getData(file, async function () {

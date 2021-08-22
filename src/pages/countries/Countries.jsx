@@ -5,6 +5,7 @@ import { countries } from '../../utility/countries-iso';
 import { useEffect } from 'react';
 import { deleteCountryThumbnail, getCountryThumbnails, updateCountryThumbnail, uploadCountryThumbnail } from '../../utility/api';
 import Loader from '../../components/Loader/Loader';
+import { resizeImageFn } from '../../utility/utility';
 
 const Countries = ({ winSize }) => {
     const [country, setCountry] = useState('');
@@ -25,7 +26,7 @@ const Countries = ({ winSize }) => {
     };
 
     const handleFileChange = async e => {
-        const file = e.target.files[0];
+        const file = await resizeImageFn(e.target.files[0]);
         const formData = new FormData();
         formData.append('country', country);
         formData.append('image', file);
