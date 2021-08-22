@@ -507,10 +507,11 @@ export const deleteCategory = async (id, setIsLoading) => {
 
 //posts api
 export const getPosts = async (setPosts, setIsLoading) => {
+    const token = localStorage.getItem('token');
     let res = {};
     setIsLoading(true)
     try {
-        res = await axios.get(`${AppUrl}api/posts`);
+        res = await axios.get(`${AppUrl}api/posts`,getDefaultHeader(token));
 
     } catch (e) {
         console.log('Fetch posts error', e)
@@ -523,10 +524,11 @@ export const getPosts = async (setPosts, setIsLoading) => {
 }
 
 export const initializePostForm = async (id, setIsLoading) => {
+    const token = localStorage.getItem('token');
     let res;
     setIsLoading(true)
     try {
-        res = await axios.get(`${AppUrl}api/posts/edit/${id}`);
+        res = await axios.get(`${AppUrl}api/posts/edit/${id}`,getDefaultHeader(token));
 
     } catch (e) {
         console.log('Fetch post error', e)
