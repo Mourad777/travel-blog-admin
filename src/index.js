@@ -22,6 +22,7 @@ const Message = React.lazy(() => import("./pages/messages/Message"));
 const Categories = React.lazy(() => import("./pages/categories/Categories"));
 const Countries = React.lazy(() => import("./pages/countries/Countries"));
 const Settings = React.lazy(() => import("./pages/settings/Settings"));
+const Subscribers = React.lazy(() => import("./pages/subscribers/Subscribers"));
 
 const App = () => {
 
@@ -69,6 +70,7 @@ const App = () => {
             <PrivateRoute isLoggedIn={isLoggedIn} path="/messages" component={Messages} />
             <PrivateRoute isLoggedIn={isLoggedIn} path="/message/:id" component={Message} />
             <PrivateRoute isLoggedIn={isLoggedIn} path="/settings" component={Settings} />
+            <PrivateRoute isLoggedIn={isLoggedIn} path="/subscribers" component={Subscribers} />
             {/* {isLoggedIn ? <Redirect to="/posts" /> : <Redirect to="/login" />} */}
             {!isLoggedIn && (<Redirect to="/login" />)}
           </AdminLayout>

@@ -573,13 +573,33 @@ export const deletePost = async (id, setIsLoading) => {
     console.log('Fetch posts response', res)
 }
 
-//messages api
+//subscribers api
 
-export const getMessages = async (setMessages, setIsLoading) => {
+export const getSubscribers = async (setSubscribers, setIsLoading) => {
+    const token = localStorage.getItem('token');
     setIsLoading(true)
     let res = {};
     try {
-        res = await axios.get(`${AppUrl}api/messages`);
+        res = await axios.get(`${AppUrl}api/subscribers`, getDefaultHeader(token));
+    } catch (e) {
+        console.log('Subscribers response error: ', e);
+        setIsLoading(false)
+    }
+    setIsLoading(false)
+    console.log('Fetch subscribers response', res)
+    const subscribers = res.data || [];
+    setSubscribers(subscribers);
+}
+
+
+//messages api
+
+export const getMessages = async (setMessages, setIsLoading) => {
+    const token = localStorage.getItem('token');
+    setIsLoading(true)
+    let res = {};
+    try {
+        res = await axios.get(`${AppUrl}api/messages`, getDefaultHeader(token));
     } catch (e) {
         console.log('Messages response error: ', e);
         setIsLoading(false)

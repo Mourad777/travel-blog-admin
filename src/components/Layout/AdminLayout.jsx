@@ -22,6 +22,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import MailIcon from '@material-ui/icons/Mail'
+import SubscriberIcon from '@material-ui/icons/People'
 import SettingsIcon from '@material-ui/icons/Settings'
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
@@ -218,6 +219,7 @@ export default function Layout({ children, isLoggedIn,onLogin }) {
                         <List>
                             {[
                                 { text: 'Messages', icon: MailIcon, url: '/messages' },
+                                { text: 'Subscribers', icon: SubscriberIcon, url: '/subscribers' },
                                 { text: 'Settings', icon: SettingsIcon, url: '/settings' },
                                 { text: 'Logout', icon: LockIcon, url: '/login' },
                             ].map((item, index) => (
