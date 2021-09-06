@@ -26,6 +26,7 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, handleDeta
         src={!isNaN(photo.src) ? '/assets/icons/video-icon.jpg' : photo.src}
         onClick={onClick ? handleClick : null}
         alt="img"
+        key={`${galleryType === 'video' ? 'video' : 'photo'}[${photo.id}]`}
       />
       {/* the react photo gallery uses the src prop as the key and must be unique or else 
       an extra gallery item gets added when rearranging, for the video gallery a custom thumbnail
@@ -45,7 +46,6 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, handleDeta
         <StyledRedButton style={{ maxWidth: 100, }} onClick={() => handleDelete(photo.id)}
         >
           Delete
-          {/* <i className="trash icon" onClick={() => handleDeleteVideo(photo.id)}></i> */}
         </StyledRedButton>
       </div>
     </div>
