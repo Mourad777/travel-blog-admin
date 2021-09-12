@@ -44,10 +44,11 @@ export const deleteComment = async (id, setIsLoading) => {
 }
 
 export const getDocument = async (docId, docType, setDocument, setIsLoading) => {
+    const token = localStorage.getItem('token');
     setIsLoading(true)
     let res;
     try {
-        res = await axios.get(`${AppUrl}api/${docType}s/${docId}`);
+        res = await axios.get(`${AppUrl}api/${docType}s/${docId}`, getDefaultHeader(token));
     } catch (e) {
         console.log('Respost fetch post or video', res)
         setIsLoading(false)
