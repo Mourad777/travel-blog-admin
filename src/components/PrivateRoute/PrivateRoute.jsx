@@ -5,6 +5,7 @@ const PrivateRoute = ({ component: Component, isLoggedIn, ...rest }) => {
 
     return (
         <Route
+            exact
             {...rest}
             render={props =>
                 isLoggedIn ? (

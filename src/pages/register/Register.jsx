@@ -56,6 +56,9 @@ const RegisterUser = ({ onLogin }) => {
     return (
         <div style={{ margin: 'auto', maxWidth: 400 }}>
             <h1>Register</h1>
+            <div style={{ maxWidth: 350 }}>
+                <p style={{ color: 'red' }}>Registration for the demo version is disabled</p>
+            </div>
             {isLoading && <div style={{ position: 'fixed', zIndex: 5, top: '50%', left: '50%', transform: 'translateX(-50%)' }}><Loader /></div>}
             <div style={{ marginTop: 20 }}>
                 <label style={{ fontSize: '1.2em' }}>First Name</label>
@@ -78,7 +81,7 @@ const RegisterUser = ({ onLogin }) => {
                 <StyledFormTextInput type="password" value={confirmPassword} onChange={handleConfirmPassword} placeholder='Confirm Password' />
             </div>
             <div style={{ textAlign: 'center', padding: '20px 0' }}>
-                <StyledSubmitButton onClick={handleForm} >{'Submit'}</StyledSubmitButton>
+                <StyledSubmitButton style={{backgroundColor:'#f2f2f2'}} disabled onClick={handleForm} >{'Submit'}</StyledSubmitButton>
             </div>
         </div>
     )

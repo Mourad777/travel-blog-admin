@@ -58,6 +58,7 @@ const App = () => {
             <Route exact path="/login">
               <Login onLogin={handleLogin} winSize={winSize} />
             </Route>
+            <PrivateRoute isLoggedIn={isLoggedIn} winSize={winSize} path="/" component={Posts} />
             <PrivateRoute isLoggedIn={isLoggedIn} winSize={winSize} path="/posts" component={Posts} />
             <PrivateRoute isLoggedIn={isLoggedIn} isPost path="/post/:id/comments" component={Comments} />
             <PrivateRoute isLoggedIn={isLoggedIn} isVideo path="/video/:id/comments" component={Comments} />

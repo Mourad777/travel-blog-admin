@@ -130,7 +130,7 @@ export default function Layout({ children, isLoggedIn,onLogin }) {
     useEffect(() => {
         const path = history.location.pathname;
         setLocation(path);
-        if (path === '/create-post' || path === '/posts') {
+        if (path === '/create-post' || path === '/posts'|| path === '/') {
             setNestedOpen(true)
         }
     }, []);
@@ -190,10 +190,10 @@ export default function Layout({ children, isLoggedIn,onLogin }) {
                                 <List component="div" disablePadding>
                                     {[
                                         { text: 'New post', icon: PostAddIcon, url: '/create-post' },
-                                        { text: 'View posts', icon: DynamicFeedIcon, url: '/posts' },
+                                        { text: 'View posts', icon: DynamicFeedIcon, url: '/posts',altUrl:'/' },
                                         // { text: 'Comments', icon: CommentIcon }
                                     ].map((item, index) => (
-                                        <ListItem style={item.url === location ? { background: 'rgb(240,240,240)' } : {}} onClick={() => history.push(item.url)} button key={item.text} className={classes.nested}>
+                                        <ListItem style={item.url === location || item.altUrl === location ? { background: 'rgb(240,240,240)' } : {}} onClick={() => history.push(item.url)} button key={item.text} className={classes.nested}>
                                             <ListItemIcon><item.icon /></ListItemIcon>
                                             <ListItemText primary={item.text} />
                                         </ListItem>
